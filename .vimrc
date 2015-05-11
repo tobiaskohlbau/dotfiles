@@ -167,13 +167,9 @@ map <C-h> <C-W>h
 map <C-l> <C-W>l
 
 " opens a new tab with current buffers path
-map <leader>te :tabedit <c-r>=expand("%:p:h")<cr>/
-map <leader>teh :tabedit <c-r>=expand("%:p:r")<cr>.h<ENTER>
-map <leader>tec :tabedit <c-r>=expand("%:p:r")<cr>.cpp<ENTER>
-map <leader>seh :split <c-r>=expand("%:p:r")<cr>.h<ENTER>
-map <leader>sec :split <c-r>=expand("%:p:r")<cr>.cpp<ENTER><c-w>r
-map <leader>vseh :vsplit <c-r>=expand("%:p:r")<cr>.h<ENTER>
-map <leader>vsec :vsplit <c-r>=expand("%:p:r")<cr>.cpp<ENTER><c-w>r
+map <leader>te :tabedit <c-r>=SwapExtension()<cr><ENTER>
+map <leader>he :split <c-r>=SwapExtension()<cr><ENTER>
+map <leader>ve :vsplit <c-r>=SwapExtension()<cr><ENTER>
 
 
 
@@ -200,7 +196,24 @@ set viminfo^=%
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "
-" => command definitons
+" => command definitions
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 command Gct execute "!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q ."
+
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"
+" => function definitions
+"
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! SwapExtension()
+    let [path, ext] = [expand('%:r'), expand('%:e')]
+    if ext == 'h'
+        let ext = 'cpp'
+    elseif ext == 'cpp'
+        let ext = 'h'
+    endif
+    return path . '.' . ext
+endfunction
