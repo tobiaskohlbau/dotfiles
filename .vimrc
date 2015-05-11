@@ -1,3 +1,12 @@
+" init vundle
+set rtp+=~/.vim/bundle/Vundle/
+call vundle#rc()
+
+" vundle packages
+Bundle 'gmarik/vundle'
+Bundle 'xoria256.vim'
+Bundle 'altercation/vim-colors-solarized'
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "
 " => general settings
@@ -127,8 +136,10 @@ set number
 
 
 " use color scheme
-colorscheme flattened_dark
-
+"set background=dark
+"let g:solarized_termtrans=1
+"colorscheme solarized
+colorscheme xoria256
 
 " Disable highlight when <leader><cr> is pressed
 map <silent> <leader><cr> :noh<cr>
@@ -173,6 +184,11 @@ map <leader>tp :tp <ENTER>
 map <leader>tf :tf <ENTER>
 map <leader>tl :tl <ENTER>
 
+" remove arrow keys
+noremap <Up> <Nop>
+noremap <Down> <Nop>
+noremap <Left> <Nop>
+noremap <Right> <Nop>
 
 " Return to last edit position when opening files (You want this!)
 autocmd BufReadPost *
