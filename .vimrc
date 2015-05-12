@@ -217,8 +217,8 @@ command Rc call ReplaceColon()
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! ReplaceColon()
-    exe "s#;#\<CR>{\<CR>};"
-    exe "normal! O\<TAB>"
+    exe "s#;#\<CR>{\<CR>}"
+    exe "normal! O"
     :startinsert
 endfunction
 
