@@ -82,6 +82,9 @@ set incsearch
 " show matching brackets
 set showmatch
 
+" configure backspace
+set backspace=eol,start,indent
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "
 " => Themes 
