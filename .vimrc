@@ -157,11 +157,11 @@ map <C-l> <C-W>l
 
 " opens a new tab with current buffers path
 map <leader>te :tabedit <c-r>=expand("%:p:h")<cr>/
-map <leader>tec :tabedit <c-r>=expand("%:p:r")<cr>.h<ENTER>
+map <leader>teh :tabedit <c-r>=expand("%:p:r")<cr>.h<ENTER>
 map <leader>tec :tabedit <c-r>=expand("%:p:r")<cr>.cpp<ENTER>
-map <leader>sec :split <c-r>=expand("%:p:r")<cr>.h<ENTER>
+map <leader>seh :split <c-r>=expand("%:p:r")<cr>.h<ENTER>
 map <leader>sec :split <c-r>=expand("%:p:r")<cr>.cpp<ENTER><c-w>r
-map <leader>vsec :vsplit <c-r>=expand("%:p:r")<cr>.h<ENTER>
+map <leader>vseh :vsplit <c-r>=expand("%:p:r")<cr>.h<ENTER>
 map <leader>vsec :vsplit <c-r>=expand("%:p:r")<cr>.cpp<ENTER><c-w>r
 
 
