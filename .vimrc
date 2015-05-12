@@ -189,6 +189,11 @@ noremap <Down> <Nop>
 noremap <Left> <Nop>
 noremap <Right> <Nop>
 
+
+" shortcut for removing colon and adding brackets
+"map <leader>rc :Rc <ENTER>
+map <leader>rc :Rc <ENTER>
+
 " Return to last edit position when opening files (You want this!)
 autocmd BufReadPost *
      \ if line("'\"") > 0 && line("'\"") <= line("$") |
@@ -203,14 +208,20 @@ set viminfo^=%
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 command Gct execute "!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q ."
-
-
+command Gcc call Load_ClassTemplate(expand("%"))
+command Rc call ReplaceColon()
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "
 " => function definitions
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! ReplaceColon()
+    exe "s#;#\<CR>{\<CR>};"
+    exe "normal! O\<TAB>"
+    :startinsert
+endfunction
+
 function! SwapExtension()
     let [path, ext] = [expand('%:r'), expand('%:e')]
     if ext == 'h'
@@ -219,4 +230,17 @@ function! SwapExtension()
         let ext = 'h'
     endif
     return path . '.' . ext
+endfunction
+
+function! Load_ClassTemplate(filetype)
+    if a:filetype =~ "\.h$"
+        0r ~/.vim/templates/cpp/ClassHeader.h
+    elseif a:filetype =~ "\.cpp$"
+        0r ~/.vim/templates/cpp/ClassFile.cpp
+    endif
+    try
+        exe "%s#\\\$tpl:name\\\$#".expand("%:t:r")."#g"
+    catch
+    endtry
+    1
 endfunction
