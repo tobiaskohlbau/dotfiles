@@ -167,7 +167,7 @@ map <C-h> <C-W>h
 map <C-l> <C-W>l
 
 " opens a new tab with current buffers path
-map <leader>te :tabedit <c-r>=SwapExtension()<cr><ENTER>
+map <leader>te :tabedit <c-r>=expand("%:p:h")<cr>/
 map <leader>he :split <c-r>=SwapExtension()<cr><ENTER>
 map <leader>ve :vsplit <c-r>=SwapExtension()<cr><ENTER>
 
