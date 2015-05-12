@@ -7,4 +7,3 @@ $tpl:name$::$tpl:name$()
 $tpl:name$::~$tpl:name$()
 {
 }
-

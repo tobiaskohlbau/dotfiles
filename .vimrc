@@ -189,10 +189,11 @@ noremap <Down> <Nop>
 noremap <Left> <Nop>
 noremap <Right> <Nop>
 
-
 " shortcut for removing colon and adding brackets
-"map <leader>rc :Rc <ENTER>
 map <leader>rc :Rc <ENTER>
+
+" shortcut for generating cpp templates
+map <leader>gcc :Gcc <ENTER>
 
 " Return to last edit position when opening files (You want this!)
 autocmd BufReadPost *
@@ -239,7 +240,11 @@ function! Load_ClassTemplate(filetype)
         0r ~/.vim/templates/cpp/ClassFile.cpp
     endif
     try
-        exe "%s#\\\$tpl:name\\\$#".expand("%:t:r")."#g"
+        silent exe "%s#\\\$tpl:name\\\$#".expand("%:t:r")."#g"
+    catch
+    endtry
+    try
+        silent exe "%s#\\\$tpl:preproc\\\$#".toupper(expand("%:t:r"))."#g"
     catch
     endtry
     1
