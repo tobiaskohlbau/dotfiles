@@ -6,6 +6,7 @@ call vundle#rc()
 Bundle 'gmarik/vundle'
 Bundle 'xoria256.vim'
 Bundle 'altercation/vim-colors-solarized'
+Plugin 'chriskempson/base16-vim'
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "
@@ -50,6 +51,13 @@ set wrap
 " misc settings
 nmap 0 ^
 
+" disable continued comments for all files
+autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
+
+" Show matching brackets
+set showmatch
+set matchtime=2
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "
 " => user interface 
@@ -78,9 +86,6 @@ map <c-space> /
 set smartcase
 set hlsearch
 set incsearch
-
-" show matching brackets
-set showmatch
 
 " configure backspace
 set backspace=eol,start,indent
@@ -139,10 +144,9 @@ set number
 
 
 " use color scheme
-"set background=dark
-"let g:solarized_termtrans=1
-"colorscheme solarized
-colorscheme xoria256
+let base16colorspace=256
+set background=dark
+colorscheme base16-default
 
 " Disable highlight when <leader><cr> is pressed
 map <silent> <leader><cr> :noh<cr>
@@ -194,6 +198,10 @@ map <leader>rc :Rc <ENTER>
 
 " shortcut for generating cpp templates
 map <leader>gcc :Gcc <ENTER>
+
+" shortcut for resizing vertical split
+map <leader>s :vertical resize -5
+map <leader>b :vertical resize +5
 
 " Return to last edit position when opening files (You want this!)
 autocmd BufReadPost *
