@@ -160,6 +160,16 @@ map <leader>sec :split <c-r>=expand("%:p:r")<cr>.cpp<ENTER><c-w>r
 map <leader>vsec :vsplit <c-r>=expand("%:p:r")<cr>.h<ENTER>
 map <leader>vsec :vsplit <c-r>=expand("%:p:r")<cr>.cpp<ENTER><c-w>r
 
+
+
+" shortcuts for ctags
+map <leader>ts :ts <ENTER>
+map <leader>tn :tn <ENTER>
+map <leader>tp :tp <ENTER>
+map <leader>tf :tf <ENTER>
+map <leader>tl :tl <ENTER>
+
+
 " Return to last edit position when opening files (You want this!)
 autocmd BufReadPost *
      \ if line("'\"") > 0 && line("'\"") <= line("$") |
@@ -167,3 +177,10 @@ autocmd BufReadPost *
      \ endif
 " Remember info about open buffers on close
 set viminfo^=%
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"
+" => command definitons
+"
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+command Gct execute "!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q ."
