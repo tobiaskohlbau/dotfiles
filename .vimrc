@@ -126,6 +126,10 @@ set fdl=1
 set number
 
 
+" use color scheme
+colorscheme flattened_dark
+
+
 " Disable highlight when <leader><cr> is pressed
 map <silent> <leader><cr> :noh<cr>
 
