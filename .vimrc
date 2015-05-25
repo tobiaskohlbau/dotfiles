@@ -4,8 +4,6 @@ call vundle#rc()
 
 " vundle packages
 Bundle 'gmarik/vundle'
-Bundle 'xoria256.vim'
-Bundle 'altercation/vim-colors-solarized'
 Plugin 'chriskempson/base16-vim'
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -17,6 +15,9 @@ Plugin 'chriskempson/base16-vim'
 " enable plugins by filetype
 filetype plugin on
 filetype indent on
+
+" unix line endings
+set ffs=unix,dos
 
 " autoread file if modified outside of vim
 set autoread
@@ -57,6 +58,7 @@ autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 " Show matching brackets
 set showmatch
 set matchtime=2
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "
@@ -148,6 +150,13 @@ let base16colorspace=256
 set background=dark
 colorscheme base16-default
 
+" show trailing whitespaces
+highlight ExtraWhitespace ctermbg=red guibg=red
+match ExtraWhitespace /\s\+$/
+
+" remove trailing whitespaces
+nnoremap <Leader>rtw :%s/\s\+$//e<CR>
+
 " Disable highlight when <leader><cr> is pressed
 map <silent> <leader><cr> :noh<cr>
 
@@ -203,6 +212,9 @@ map <leader>gcc :Gcc <ENTER>
 map <leader>s :vertical resize -5
 map <leader>b :vertical resize +5
 
+" shortcut for beautify document
+map <leader>bd :Bd <ENTER>
+
 " Return to last edit position when opening files (You want this!)
 autocmd BufReadPost *
      \ if line("'\"") > 0 && line("'\"") <= line("$") |
@@ -219,12 +231,20 @@ set viminfo^=%
 command Gct execute "!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q ."
 command Gcc call Load_ClassTemplate(expand("%"))
 command Rc call ReplaceColon()
+command Bd call BeautifyDocument()
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "
 " => function definitions
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! BeautifyDocument()
+    exe "normal mz"
+      %s/\r//ge
+      %s/\s\+$//ge
+    exe "normal `z"
+    silent exe "retab"
+endfunction
 function! ReplaceColon()
     exe "s#;#\<CR>{\<CR>}"
     exe "normal! O"
