@@ -209,8 +209,8 @@ map <leader>rc :Rc <ENTER>
 map <leader>gcc :Gcc <ENTER>
 
 " shortcut for resizing vertical split
-map <leader>s :vertical resize -5
-map <leader>b :vertical resize +5
+map <leader>s :vertical resize -5 <ENTER>
+map <leader>b :vertical resize +5 <ENTER>
 
 " shortcut for beautify document
 map <leader>bd :Bd <ENTER>
