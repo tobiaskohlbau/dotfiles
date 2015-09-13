@@ -1,11 +1,3 @@
-" init vundle
-set rtp+=~/.vim/bundle/Vundle/
-call vundle#rc()
-
-" vundle packages
-Bundle 'gmarik/vundle'
-Plugin 'chriskempson/base16-vim'
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "
 " => general settings
@@ -62,7 +54,7 @@ set matchtime=2
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "
-" => user interface 
+" => user interface
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -84,7 +76,7 @@ set cmdheight=2
 " ignore case for searching
 set ignorecase
 map <space> /
-map <c-space> / 
+map <c-space> /
 set smartcase
 set hlsearch
 set incsearch
@@ -94,7 +86,7 @@ set backspace=eol,start,indent
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "
-" => Themes 
+" => Themes
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -162,7 +154,7 @@ map <silent> <leader><cr> :noh<cr>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "
-" => backup 
+" => backup
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -173,7 +165,7 @@ set noswapfile
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "
-" => shortcuts 
+" => shortcuts
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -222,6 +214,11 @@ autocmd BufReadPost *
      \ endif
 " Remember info about open buffers on close
 set viminfo^=%
+
+" NerdTree
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+map <leader>n :NERDTreeToggle<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "
