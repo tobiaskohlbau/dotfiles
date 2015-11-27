@@ -21,12 +21,20 @@ export PATH=$PATH:$GOPATH/bin
 
 # Alias settings
 alias dev='cd $DEV'
+alias ls='ls --color=auto'
 
 # PS1 modified
-parse_git_branch() {
-	git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
-}
-export PS1="\[\033[00m\]\u@\h\[\033[01;33m\] \w \[\033[31m\]\$(parse_git_branch)\[\033[00m\]$\[\033[00m\] "
+if [ -e "/usr/share/git/completion/git-prompt.sh" ]
+then
+    source /usr/share/git/completion/git-prompt.sh
+    export PS1="\[\033[00m\]\u@\h\[\033[01;33m\] \w \[\033[31m\]\$(__git_ps1)\[\033[00m\]$\[\033[00m\] "
+fi
+
+# Git autocomplete
+if [ -e "/usr/share/git/completion/git-completion.bash" ]
+then
+    source /usr/share/git/completion/git-completion.bash
+fi
 
 # Compiler settings
 if [ -e "/usr/bin/clang" ]
