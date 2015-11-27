@@ -1,3 +1,12 @@
+" init vundle
+set rtp+=~/.vim/bundle/Vundle/
+call vundle#rc()
+
+" vundle packages
+Bundle 'gmarik/vundle'
+Bundle 'scrooloose/nerdtree'
+Plugin 'chriskempson/base16-vim'
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "
 " => general settings
@@ -203,6 +212,13 @@ map <leader>gcc :Gcc <ENTER>
 " shortcut for resizing vertical split
 map <leader>s :vertical resize -5 <ENTER>
 map <leader>b :vertical resize +5 <ENTER>
+
+" shortcut for buffer access
+map <leader>ls :ls <ENTER>
+map <leader>n :bnext <ENTER>
+map <leader>p :blast <ENTER>
+map <leader>sn :sbnext <ENTER>
+map <leader>sp :sblast <ENTER>
 
 " shortcut for beautify document
 map <leader>bd :Bd <ENTER>

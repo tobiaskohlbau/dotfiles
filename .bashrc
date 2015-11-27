@@ -1,9 +1,10 @@
-[[ $- != *i* ]] && return
-alias ls='ls --color=auto'
-PS1='[\u@\h \W]\$ '
-
 # Start ssh agent
-eval `ssh-agent -s`
+SSH_AGENT="/usr/bin/gnome-keyring-daemon"
+if [ -e "$SSH_AGENT" ]
+then
+    eval $($SSH_AGENT --start --components=pkcs11,secrets,ssh)
+    export SSH_AUTH_SOCK
+fi
 
 # Enable 256 color
 export TERM="xterm-256color"
@@ -20,3 +21,20 @@ export PATH=$PATH:$GOPATH/bin
 
 # Alias settings
 alias dev='cd $DEV'
+
+# PS1 modified
+parse_git_branch() {
+	git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
+}
+export PS1="\[\033[00m\]\u@\h\[\033[01;33m\] \w \[\033[31m\]\$(parse_git_branch)\[\033[00m\]$\[\033[00m\] "
+
+# Compiler settings
+if [ -e "/usr/bin/clang" ]
+then
+    export CC="/usr/bin/clang"
+    export CXX="/usr/bin/clang++"
+fi
+if [ -e "/usr/local/bin/lld" ]
+then
+    export LDD="/usr/local/bin/lld"
+fi
