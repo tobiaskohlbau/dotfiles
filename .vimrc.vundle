@@ -6,3 +6,4 @@ call vundle#rc()
 Bundle 'gmarik/vundle'
 Bundle 'scrooloose/nerdtree'
 Plugin 'chriskempson/base16-vim'
+Plugin 'airblade/vim-gitgutter'

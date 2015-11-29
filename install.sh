@@ -8,10 +8,10 @@ git clone https://github.com/chriskempson/base16-shell.git ~/.config/base16-shel
 
 # BASHRC
 if [ -f ~/.bashrc ]; then
-    cat .bashrc >> ~/.bashrc
-else
-    cp .bashrc ~/
+    mv ~/.bashrc ~/.bashrc.bak
+    echo ".bashrc already exists moved to ~/.bashrc.bak"
 fi
+cp .bashrc ~/
 source ~/.bashrc
 
 # VIM
