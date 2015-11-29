@@ -1,9 +1,11 @@
 " init vundle
 set rtp+=~/.vim/bundle/Vundle/
-call vundle#rc()
+call vundle#begin()
 
 " vundle packages
 Bundle 'gmarik/vundle'
 Bundle 'scrooloose/nerdtree'
 Plugin 'chriskempson/base16-vim'
 Plugin 'airblade/vim-gitgutter'
+
+call vundle#end()

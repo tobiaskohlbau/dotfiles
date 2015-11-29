@@ -1,21 +1,3 @@
-" init vundle
-set rtp+=~/.vim/bundle/Vundle/
-call vundle#rc()
-
-" vundle packages
-Bundle 'gmarik/vundle'
-Bundle 'scrooloose/nerdtree'
-Plugin 'chriskempson/base16-vim'
-
-" init vundle
-set rtp+=~/.vim/bundle/Vundle/
-call vundle#rc()
-
-" vundle packages
-Bundle 'gmarik/vundle'
-Bundle 'scrooloose/nerdtree'
-Plugin 'chriskempson/base16-vim'
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "
 " => general settings
