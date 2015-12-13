@@ -27,8 +27,8 @@ fi
 git clone -q https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle
 cp -R .vim ~/
 cp .vimrc.vundle ~/.vimrc
-echo -e "" >> ~/.vimrc
 vim +PluginInstall +qall
+echo -e "" >> ~/.vimrc
 cat .vimrc >> ~/.vimrc
 
 # TMUX
@@ -44,11 +44,22 @@ git config --global user.name "Tobias Kohlbau"
 git config --global core.editor "vim"
 
 # FONTS
-if [ =d /tmp/fonts ]; then
+if [ -d /tmp/fonts ]; then
     rm -rf /tmp/fonts
 fi
 git clone https://github.com/powerline/fonts.git /tmp/fonts
 sh /tmp/fonts/install.sh
+
+# GNOME-TERMINAL
 if [ -f /usr/bin/gsettings ]; then
-    gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:default/ font 'Hack 9'
+    DEFAULT=$(gsettings get org.gnome.Terminal.ProfilesList default | grep -oE "[^']+")
+    gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$DEFAULT/ font 'Hack 9'
+    gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$DEFAULT/ use-system-font 'false'
+    gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$DEFAULT/ allow-bold 'false'
+    gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$DEFAULT/ audible-bell 'false'
+    gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$DEFAULT/ scrollbar-policy 'never'
+    gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$DEFAULT/ default-show-menubar 'false'
+    gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$DEFAULT/ use-custom-command 'true'
+    gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$DEFAULT/ custom-command 'tmux'
+    gsettings set org.gnome.Terminal.Legacy.Settings default-show-menubar 'false'
 fi
