@@ -1,59 +1,118 @@
-#!/bin/sh
+#!/bin/bash
+EXEC_PATH=$(cd "$( dirname "$0")" && pwd)
+
+#############################################
+#               PROGRAM SPECIFIC            #
+#############################################
+
+if [ ! -f /usr/bin/git ]; then
+    echo "Git required"
+    exit 0
+fi
 
 # BASE16
 if [ -d ~/.config/base16-shell ]; then
-    rm -rf ~/.config/base16-shell
+    cd ~/.config/base16-shell
+    git fetch
+    DIFF=$(git rev-list HEAD...origin/master --count)
+    if [ $DIFF -ne 0 ]; then
+        git pull origin master
+        echo "BASE16 updated"
+    fi
+    cd $EXEC_PATH
+else
+    git clone -q https://github.com/chriskempson/base16-shell.git ~/.config/base16-shell
+    echo "BASE16 installed"
 fi
-git clone -q https://github.com/chriskempson/base16-shell.git ~/.config/base16-shell
 
 # BASHRC
-if [ -f ~/.bashrc ]; then
-    mv ~/.bashrc ~/.bashrc.bak
-    echo ".bashrc already exists moved to ~/.bashrc.bak"
+if [ -f $HOME/.bashrc ]; then
+    $(diff -q $EXEC_PATH/.bashrc ~/.bashrc)
+    if [ $? -ne 0 ]; then
+        rm -rf ~/.bashrc.bak
+        mv ~/.bashrc ~/.bashrc.bak
+        echo "~/.bashrc already exists moved to ~/.bashrc.bak"
+        cp $EXEC_PATH/.bashrc ~/
+        source ~/.bashrc
+    fi
+else
+    cp $EXEC_PATH/.bashrc ~/
+    source ~/.bashrc
+    echo "BASHRC installed"
 fi
-cp .bashrc ~/
-source ~/.bashrc
 
 # VIM
 if [ -f ~/.vimrc ]; then
-    mv ~/.vimrc ~/.vimrc.bak
-    echo ".vimrc already exists moved to ~/.vimrc.bak"
+    LINES=$(sed -n '$=' $EXEC_PATH/.vimrc.vundle)
+    $(diff -q <(head -n $LINES $EXEC_PATH/.vimrc.vundle) <(head -n $LINES ~/.vimrc))
+    if [ $? -ne 0 ]; then
+        rm -rf ~/.vimrc.bak
+        mv -f ~/.vimrc ~/.vimrc.bak
+        echo "~/.vimrc already exists moved to ~/.vimrc.bak"
+        cp -R $EXEC_PATH/.vim ~/.vim
+        cp $EXEC_PATH/.vimrc.vundle ~/.vimrc
+        vim +PluginInstall +qall
+        echo -e "" >> ~/.vimrc
+        cat $EXEC_PATH/.vimrc >> ~/.vimrc
+        echo "VIM updated"
+    fi
+else
+    git clone -q https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle
+    cp -R .vim ~/.vim
+    cp $EXEC_PATH/.vimrc.vundle ~/.vimrc
+    vim +PluginInstall +qall
+    echo -e "" >> ~/.vimrc
+    cat $EXEC_PATH/.vimrc >> ~/.vimrc
+    echo "VIM installed"
 fi
-if [ -d ~/.vim ]; then
-    rm -rf ~/.vim.bak
-    mv ~/.vim ~/.vim.bak
-    echo ".vim already exists moved to ~/.vim.bak"
-fi
-git clone -q https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle
-cp -R .vim ~/
-cp .vimrc.vundle ~/.vimrc
-vim +PluginInstall +qall
-echo -e "" >> ~/.vimrc
-cat .vimrc >> ~/.vimrc
 
 # TMUX
 if [ -f ~/.tmux.conf ]; then
-    mv ~/.tmux.conf ~/.tmux.conf.bak
-    echo ".tmux.conf already exists moved to ~/.tmux.conf.bak"
+    $(diff -q $EXEC_PATH/.tmux.conf ~/.tmux.conf)
+    if [ $? -ne 0 ]; then
+        rm -rf ~/.tmux.conf.bak
+        mv ~/.tmux.conf ~/.tmux.conf.bak
+        echo "~/.tmux.conf already exists moved to ~/.tmux.conf.bak"
+        echo "TMUX updated"
+    fi
+else
+    cp $EXEC_PATH/.tmux.conf ~/
+    echo "TMUX installed"
 fi
-cp .tmux.conf ~/
+
+# FONTS
+if [ -d fonts ]; then
+    cd fonts
+    git fetch
+    DIFF=$(git rev-list HEAD...origin/master --count)
+    if [ $DIFF -ne 0 ]; then
+        git pull origin master
+        sh fonts/install.sh
+        echo "FONTS updated"
+    fi
+    cd $EXEC_PATH
+else
+    git clone -q https://github.com/powerline/fonts.git fonts
+    sh fonts/install.sh
+    echo "FONTS installed"
+fi
+
+#############################################
+#               GENERAL                     #
+#############################################
 
 # GIT
 git config --global user.email "tobias.kohlbau@gmail.com"
 git config --global user.name "Tobias Kohlbau"
 git config --global core.editor "vim"
-git config --global alias.cs commmit -s
+git config --global diff.tool vimdiff
+git config --global difftool.prompt false
+if [ -f /usr/bin/gitg ]; then
+    git config --global alias.visual '!gitg'
+fi
+git config --global alias.cs 'commit -s'
 git config --global alias.last 'log -1 HEAD'
-if [ -f /usr/bin/gitk ]; then
-    git config --global alias.visual '!gitk'
-fi
-
-# FONTS
-if [ -d /tmp/fonts ]; then
-    rm -rf /tmp/fonts
-fi
-git clone https://github.com/powerline/fonts.git /tmp/fonts
-sh /tmp/fonts/install.sh
+git config --global alias.d difftool
 
 # GNOME-TERMINAL
 if [ -f /usr/bin/gsettings ]; then
