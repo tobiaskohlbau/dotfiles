@@ -4,9 +4,15 @@
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+
 " enable plugins by filetype
 filetype plugin on
 filetype indent on
+
+"enable tweaks
+set ignorecase
+set laststatus=2
+set hidden
 
 " unix line endings
 set ffs=unix,dos
@@ -50,6 +56,13 @@ autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 " Show matching brackets
 set showmatch
 set matchtime=2
+
+" ,v brings up .vimrc (thanks, sontek)
+" ,V reloads it (as long as you remember to save it first)
+map <leader>v :sp ~/.vimrc<CR><C-W>
+map <silent> <leader>V :source ~/.vimrc<CR>:filetype detect<CR>:exe ":echo 'vimrc reloaded'"<CR>
+
+set lazyredraw
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -169,17 +182,10 @@ set noswapfile
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-map <C-j> <C-W>j
-map <C-k> <C-W>k
-map <C-h> <C-W>h
-map <C-l> <C-W>l
-
 " opens a new tab with current buffers path
 map <leader>te :tabedit <c-r>=expand("%:p:h")<cr>/
 map <leader>he :split <c-r>=SwapExtension()<cr><ENTER>
 map <leader>ve :vsplit <c-r>=SwapExtension()<cr><ENTER>
-
-
 
 " shortcuts for ctags
 map <leader>ts :ts <ENTER>
@@ -200,32 +206,36 @@ map <leader>rc :Rc <ENTER>
 " shortcut for generating cpp templates
 map <leader>gcc :Gcc <ENTER>
 
-" shortcut for resizing vertical split
-map <leader>s :vertical resize -5 <ENTER>
-map <leader>b :vertical resize +5 <ENTER>
+" BufOnly Settings
+map <leader>bo :BufOnly<CR>
 
 " shortcut for buffer access
 map <leader>ls :ls <ENTER>
-map <leader>n :bnext <ENTER>
-map <leader>p :blast <ENTER>
-map <leader>sn :sbnext <ENTER>
-map <leader>sp :sblast <ENTER>
+map <leader>f :bn <ENTER>
+map <leader>b :bp <ENTER>
+map <leader>d :bd <ENTER>
+map <leader>sn :sbn <ENTER>
+map <leader>sp :sbp <ENTER>
 
 " shortcut for beautify document
 map <leader>bd :Bd <ENTER>
 
 " Return to last edit position when opening files (You want this!)
 autocmd BufReadPost *
-     \ if line("'\"") > 0 && line("'\"") <= line("$") |
-     \   exe "normal! g`\"" |
-     \ endif
+ \ if line("'\"") > 0 && line("'\"") <= line("$") |
+ \   exe "normal! g`\"" |
+ \ endif
 " Remember info about open buffers on close
 set viminfo^=%
 
 " NerdTree
 autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
-map <leader>n :NERDTreeToggle<CR>
+"autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+map <TAB> :NERDTreeToggle<CR>
+map <leader>ff :NERDTreeFind<CR>
+
+" Tagbar settings
+map <F8> :TagbarToggle<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "
@@ -310,3 +320,42 @@ nmap <silent> <F5> :call ClangCheck()<CR><CR>
 
 map <C-K> :pyf /usr/share/clang/clang-format.py<CR><CR>
 imap <C-K> <c-o>:pyf /usr/share/clang/clang-format.py<CR><CR>
+
+let g:airline_powerline_fonts = 1
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tmuxline#enabled = 1
+
+" Goldenview Settings
+let g:goldenview__enable_default_mapping = 0
+
+" Paste from clipboard
+map <leader>p "+gP
+
+" Clear highlights
+map <Space> :noh<CR>
+
+" Ctrl-P settings
+let g:ctrlp_working_path_mode = 'r'
+let g:ctrlp_extensions = ['tag', 'buffertag', 'line', 'funky']
+let g:ctrlp_custom_ignore = 'git'
+
+"Toggle relative numbering, and set to absolute on loss of focus or insert mode
+set rnu
+function! ToggleNumbersOn()
+    set nu!
+    set rnu
+endfunction
+function! ToggleRelativeOn()
+    set rnu!
+    set nu
+endfunction
+autocmd FocusLost * call ToggleRelativeOn()
+autocmd FocusGained * call ToggleRelativeOn()
+autocmd InsertEnter * call ToggleRelativeOn()
+autocmd InsertLeave * call ToggleRelativeOn()
+
+" resize panes
+nnoremap <silent> <Right> :vertical resize +5<CR>
+nnoremap <silent> <Left> :vertical resize -5<CR>
+nnoremap <silent> <Up> :resize +5<CR>
+nnoremap <silent> <Down> :resize -5<CR>

@@ -16,10 +16,12 @@ source ~/.bashrc
 
 # VIM
 if [ -f ~/.vimrc ]; then
-    rm -f ~/.vimrc
+    mv ~/.vimrc ~/.vimrc.bak
+    echo ".vimrc already exists moved to ~/.vimrc.bak"
 fi
 if [ -d ~/.vim ]; then
-    rm -rf ~/.vim
+    mv ~/.vim ~/.vim.bak
+    echo ".vim already exists moved to ~/.vim.bak"
 fi
 git clone -q https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle
 cp -R .vim ~/
@@ -30,17 +32,10 @@ cat .vimrc >> ~/.vimrc
 
 # TMUX
 if [ -f ~/.tmux.conf ]; then
-    rm -f ~/.tmux.conf
+    mv ~/.tmux.conf ~/.tmux.conf.bak
+    echo ".tmux.conf already exists moved to ~/.tmux.conf.bak"
 fi
 cp .tmux.conf ~/
-
-# I3
-if [ -d ~/.i3 ]; then
-    rm -f ~/.i3/config
-else
-    mkdir ~/.i3
-fi
-cp .i3 ~/.i3/config
 
 # GIT
 git config --global user.email "tobias.kohlbau@gmail.com"

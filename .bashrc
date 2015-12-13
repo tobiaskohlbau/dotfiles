@@ -44,5 +44,5 @@ then
 fi
 if [ -e "/usr/local/bin/lld" ]
 then
-    export LDD="/usr/local/bin/lld"
+    export LD="/usr/local/bin/lld"
 fi

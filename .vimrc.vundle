@@ -5,7 +5,17 @@ call vundle#begin()
 " vundle packages
 Bundle 'gmarik/vundle'
 Bundle 'scrooloose/nerdtree'
+Bundle 'tpope/vim-fugitive'
 Plugin 'chriskempson/base16-vim'
 Plugin 'airblade/vim-gitgutter'
+Plugin 'bling/vim-airline'
+Plugin 'edkolev/tmuxline.vim'
+Plugin 'zhaocai/GoldenView.Vim'
+Plugin 'majutsushi/tagbar'
+Plugin 'schickling/vim-bufonly'
+Plugin 'christoomey/vim-tmux-navigator'
+Plugin 'ctrlpvim/ctrlp.vim'
+Plugin 'kaneshin/ctrlp-git-log'
+Plugin 'tpope/vim-surround'
 
 call vundle#end()
