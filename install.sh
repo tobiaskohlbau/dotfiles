@@ -20,6 +20,7 @@ if [ -f ~/.vimrc ]; then
     echo ".vimrc already exists moved to ~/.vimrc.bak"
 fi
 if [ -d ~/.vim ]; then
+    rm -rf ~/.vim.bak
     mv ~/.vim ~/.vim.bak
     echo ".vim already exists moved to ~/.vim.bak"
 fi
@@ -41,3 +42,13 @@ cp .tmux.conf ~/
 git config --global user.email "tobias.kohlbau@gmail.com"
 git config --global user.name "Tobias Kohlbau"
 git config --global core.editor "vim"
+
+# FONTS
+if [ =d /tmp/fonts ]; then
+    rm -rf /tmp/fonts
+fi
+git clone https://github.com/powerline/fonts.git /tmp/fonts
+sh /tmp/fonts/install.sh
+if [ -f /usr/bin/gsettings ]; then
+    gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:default/ font 'Hack 9'
+fi
