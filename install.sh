@@ -42,6 +42,11 @@ cp .tmux.conf ~/
 git config --global user.email "tobias.kohlbau@gmail.com"
 git config --global user.name "Tobias Kohlbau"
 git config --global core.editor "vim"
+git config --global alias.cs commmit -s
+git config --global alias.last 'log -1 HEAD'
+if [ -f /usr/bin/gitk ]; then
+    git config --global alias.visual '!gitk'
+fi
 
 # FONTS
 if [ -d /tmp/fonts ]; then
