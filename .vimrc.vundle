@@ -17,5 +17,9 @@ Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'kaneshin/ctrlp-git-log'
 Plugin 'tpope/vim-surround'
+Plugin 'kshenoy/vim-signature'
+Plugin 'easymotion/vim-easymotion'
+Plugin 'vim-utils/vim-man'
+Plugin 'tyru/open-browser.vim'
 
 call vundle#end()

@@ -359,3 +359,9 @@ nnoremap <silent> <Right> :vertical resize +5<CR>
 nnoremap <silent> <Left> :vertical resize -5<CR>
 nnoremap <silent> <Up> :resize +5<CR>
 nnoremap <silent> <Down> :resize -5<CR>
+
+" Documentation
+autocmd FileType cpp set keywordprg=cppman
+map <leader>k <Plug>(Man)
+nmap gx <Plug>(openbrowser-smart-search)
+vmap gx <Plug>(openbrowser-smart-search)
