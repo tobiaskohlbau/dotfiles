@@ -46,3 +46,6 @@ if [ -e "/usr/local/bin/lld" ]
 then
     export LD="/usr/local/bin/lld"
 fi
+
+# Caps as Esc
+xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'
