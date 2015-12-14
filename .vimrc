@@ -24,8 +24,8 @@ let mapleader=","
 let g:mapleader=","
 
 " fast saving
-nmap <leader>w :w!<cr>
-
+nmap <leader>w :w!<CR>
+nmap <leader>wq :wq!<CR>
 
 " indent settings
 
@@ -211,8 +211,8 @@ map <leader>bo :BufOnly<CR>
 
 " shortcut for buffer access
 map <leader>ls :ls <ENTER>
-map <leader>f :bn <ENTER>
-map <leader>b :bp <ENTER>
+map <leader>n :bn <ENTER>
+map <leader>p :bp <ENTER>
 map <leader>d :bd <ENTER>
 map <leader>sn :sbn <ENTER>
 map <leader>sp :sbp <ENTER>
@@ -327,9 +327,6 @@ let g:airline#extensions#tmuxline#enabled = 1
 
 " Goldenview Settings
 let g:goldenview__enable_default_mapping = 0
-
-" Paste from clipboard
-map <leader>p "+gP
 
 " Clear highlights
 map <Space> :noh<CR>
