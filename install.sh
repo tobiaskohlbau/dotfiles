@@ -97,6 +97,20 @@ else
     echo "FONTS installed"
 fi
 
+# DOCKER
+if [ -f ~/.dockerfunc ]; then
+    $(diff -q $EXEC_PATH/.dockerfunc ~/.dockerfunc)
+    if [ $? -ne 0 ]; then
+        rm -rf ~/.dockerfunc.bak
+        mv ~/.dockerfunc ~/.dockerfunc
+        echo "~/.dockerfunc already exists moved to ~/.dockerfunc"
+        echo "DOCKER updated"
+    fi
+else
+    cp $EXEC_PATH/.dockerfunc ~/
+    echo "DOCKER installed"
+fi
+
 #############################################
 #               GENERAL                     #
 #############################################

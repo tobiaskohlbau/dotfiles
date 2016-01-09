@@ -49,3 +49,8 @@ fi
 
 # Caps as Esc
 xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'
+
+for file in ~/.{exports,dockerfunc}; do
+    [[ -r "$file" ]] && [[ -f "$file" ]] && source "$file"
+done
+unset file
