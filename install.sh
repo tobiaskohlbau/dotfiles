@@ -145,6 +145,7 @@ git config --global user.name "Tobias Kohlbau"
 git config --global core.editor "vim"
 git config --global diff.tool vimdiff
 git config --global difftool.prompt false
+git config --global push.default simple
 if [ -f /usr/bin/gitg ]; then
     git config --global alias.visual '!gitg'
 fi
