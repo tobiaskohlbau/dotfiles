@@ -1,3 +1,9 @@
+# Windows path
+$(uname -o | grep Msys > /dev/null)
+if [ $? -eq 0 ]; then
+    cd /c/Development
+fi
+
 # Start ssh agent
 SSH_AGENT="/usr/bin/gnome-keyring-daemon"
 if [ -e "$SSH_AGENT" ]
