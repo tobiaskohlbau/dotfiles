@@ -41,6 +41,20 @@ else
     echo "BASHRC installed"
 fi
 
+# MINTTYRC
+if [ -f "$HOME/.minttyrc" ]; then
+    $(diff -q "$EXEC_PATH/.minttyrc" "$HOME/.minttyrc")
+    if [ $? -ne 0 ]; then
+        rm -rf "$HOME/.minttyrc.bak"
+        mv "$HOME/.minttyrc" "$HOME/.minttyrc.bak"
+        echo "$HOME/.minttyrc already exists moved to $HOME/.mintty.bak"
+        cp "$EXEC_PATH/.minttyrc" "$HOME/"
+    fi
+else
+    cp "$EXEC_PATH/.minttyrc" "$HOME/"
+    echo "MINTTYRC installed"
+fi
+
 # VIM
 if [ -f "$HOME/.vimrc" ]; then
     LINES=$(sed -n '$=' "$EXEC_PATH/.vimrc.vundle")
