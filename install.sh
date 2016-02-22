@@ -126,8 +126,8 @@ if [ -f "$HOME/.dockerfunc" ]; then
     $(diff -q "$EXEC_PATH/.dockerfunc" "$HOME/.dockerfunc")
     if [ $? -ne 0 ]; then
         rm -rf "$HOME/.dockerfunc.bak"
-        mv "$HOME/.dockerfunc" "$HOME/.dockerfunc"
-        echo "$HOME/.dockerfunc already exists moved to $HOME/.dockerfunc"
+        mv "$HOME/.dockerfunc" "$HOME/.dockerfunc.bak"
+        echo "$HOME/.dockerfunc already exists moved to $HOME/.dockerfunc.bak"
         echo "DOCKER updated"
     fi
 else
