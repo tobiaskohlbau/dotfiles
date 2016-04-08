@@ -10,58 +10,91 @@ if [ ! -f /usr/bin/git ]; then
     exit 0
 fi
 
+# SOLARIZED
+if [ -d solarized ]; then
+    cd solarized
+    git fetch
+    DIFF=$(git rev-list HEAD...origin/master --count)
+    if [ $DIFF -ne 0 ]; then
+        git pull origin master
+        sh solarized/install.sh
+        sh solarized/set_dark.sh
+        echo "SOLARIZED updated"
+    fi
+    cd "$EXEC_PATH"
+else
+    git clone https://github.com/Anthony25/gnome-terminal-colors-solarized.git solarized
+    sh solarized/install.sh
+    sh solarized/set_dark.sh
+    echo "SOLARIZED installed"
+fi
+
 # BASHRC
-if [ -f $HOME/.bashrc ]; then
-    $(diff -q $EXEC_PATH/.bashrc ~/.bashrc)
+if [ -f "$HOME/.bashrc" ]; then
+    $(diff -q "$EXEC_PATH/.bashrc" "$HOME/.bashrc")
     if [ $? -ne 0 ]; then
-        rm -rf ~/.bashrc.bak
-        mv ~/.bashrc ~/.bashrc.bak
-        echo "~/.bashrc already exists moved to ~/.bashrc.bak"
-        cp $EXEC_PATH/.bashrc ~/
-        source ~/.bashrc
+        rm -rf "$HOME/.bashrc.bak"
+        mv "$HOME/.bashrc" "$HOME/.bashrc.bak"
+        echo "$HOME/.bashrc already exists moved to $HOME/.bashrc.bak"
+        cp "$EXEC_PATH/.bashrc" "$HOME/"
+        source "$HOME/.bashrc"
     fi
 else
-    cp $EXEC_PATH/.bashrc ~/
-    source ~/.bashrc
+    cp "$EXEC_PATH/.bashrc" "$HOME/"
+    source "$HOME/.bashrc"
     echo "BASHRC installed"
 fi
 
-# VIM
-if [ -f ~/.vimrc ]; then
-    LINES=$(sed -n '$=' $EXEC_PATH/.vimrc.vundle)
-    $(diff -q <(head -n $LINES $EXEC_PATH/.vimrc.vundle) <(head -n $LINES ~/.vimrc))
+# MINTTYRC
+if [ -f "$HOME/.minttyrc" ]; then
+    $(diff -q "$EXEC_PATH/.minttyrc" "$HOME/.minttyrc")
     if [ $? -ne 0 ]; then
-        rm -rf ~/.vimrc.bak
-        mv -f ~/.vimrc ~/.vimrc.bak
-        echo "~/.vimrc already exists moved to ~/.vimrc.bak"
-        cp -R $EXEC_PATH/.vim ~/.vim
-        cp $EXEC_PATH/.vimrc.vundle ~/.vimrc
+        rm -rf "$HOME/.minttyrc.bak"
+        mv "$HOME/.minttyrc" "$HOME/.minttyrc.bak"
+        echo "$HOME/.minttyrc already exists moved to $HOME/.mintty.bak"
+        cp "$EXEC_PATH/.minttyrc" "$HOME/"
+    fi
+else
+    cp "$EXEC_PATH/.minttyrc" "$HOME/"
+    echo "MINTTYRC installed"
+fi
+
+# VIM
+if [ -f "$HOME/.vimrc" ]; then
+    LINES=$(sed -n '$=' "$EXEC_PATH/.vimrc.vundle")
+    $(diff -q <(head -n $LINES "$EXEC_PATH/.vimrc.vundle") <(head -n $LINES "$HOME/.vimrc"))
+    if [ $? -ne 0 ]; then
+        rm -rf "$HOME/.vimrc.bak"
+        mv -f "$HOME/.vimrc" "$HOME/.vimrc.bak"
+        echo "$HOME/.vimrc already exists moved to $HOME/.vimrc.bak"
+        cp -R "$EXEC_PATH/.vim" "$HOME/.vim"
+        cp "$EXEC_PATH/.vimrc.vundle" "$HOME/.vimrc"
         vim +PluginInstall +qall
-        echo -e "" >> ~/.vimrc
-        cat $EXEC_PATH/.vimrc >> ~/.vimrc
+        echo -e "" >> "$HOME/.vimrc"
+        cat "$EXEC_PATH/.vimrc" >> "$HOME/.vimrc"
         echo "VIM updated"
     fi
 else
-    git clone -q https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle
-    cp -R .vim ~/.vim
-    cp $EXEC_PATH/.vimrc.vundle ~/.vimrc
+    git clone -q https://github.com/gmarik/Vundle.vim.git "$HOME/.vim/bundle/Vundle"
+    cp -R ".vim" "$HOME/.vim"
+    cp "$EXEC_PATH/.vimrc.vundle" "$HOME/.vimrc"
     vim +PluginInstall +qall
-    echo -e "" >> ~/.vimrc
-    cat $EXEC_PATH/.vimrc >> ~/.vimrc
+    echo -e "" >> "$HOME/.vimrc"
+    cat "$EXEC_PATH/.vimrc" >> "$HOME/.vimrc"
     echo "VIM installed"
 fi
 
 # TMUX
-if [ -f ~/.tmux.conf ]; then
-    $(diff -q $EXEC_PATH/.tmux.conf ~/.tmux.conf)
+if [ -f "$HOME/.tmux.conf" ]; then
+    $(diff -q "$EXEC_PATH/.tmux.conf" "$HOME/.tmux.conf")
     if [ $? -ne 0 ]; then
-        rm -rf ~/.tmux.conf.bak
-        mv ~/.tmux.conf ~/.tmux.conf.bak
-        echo "~/.tmux.conf already exists moved to ~/.tmux.conf.bak"
+        rm -rf "$HOME/.tmux.conf.bak"
+        mv "$HOME/.tmux.conf" "$HOME/.tmux.conf.bak"
+        echo "$HOME/.tmux.conf already exists moved to $HOME/.tmux.conf.bak"
         echo "TMUX updated"
     fi
 else
-    cp $EXEC_PATH/.tmux.conf ~/
+    cp "$EXEC_PATH/.tmux.conf" "$HOME/"
     echo "TMUX installed"
 fi
 
@@ -72,27 +105,37 @@ if [ -d fonts ]; then
     DIFF=$(git rev-list HEAD...origin/master --count)
     if [ $DIFF -ne 0 ]; then
         git pull origin master
-        sh fonts/install.sh
+        $(uname -o | grep Msys &> /dev/null)
+        if [ $? -eq 0 ]; then
+            powershell -ExecutionPolicy ByPass -File fonts/install.ps1
+        else
+            sh fonts/install.sh
+        fi
         echo "FONTS updated"
     fi
-    cd $EXEC_PATH
+    cd "$EXEC_PATH"
 else
     git clone -q https://github.com/powerline/fonts.git fonts
-    sh fonts/install.sh
+    $(uname -o | grep Msys &> /dev/null)
+    if [ $? -eq 0 ]; then
+        powershell -ExecutionPolicy ByPass -File fonts/install.ps1
+    else
+        sh fonts/install.sh
+    fi
     echo "FONTS installed"
 fi
 
 # DOCKER
-if [ -f ~/.dockerfunc ]; then
-    $(diff -q $EXEC_PATH/.dockerfunc ~/.dockerfunc)
+if [ -f "$HOME/.dockerfunc" ]; then
+    $(diff -q "$EXEC_PATH/.dockerfunc" "$HOME/.dockerfunc")
     if [ $? -ne 0 ]; then
-        rm -rf ~/.dockerfunc.bak
-        mv ~/.dockerfunc ~/.dockerfunc
-        echo "~/.dockerfunc already exists moved to ~/.dockerfunc"
+        rm -rf "$HOME/.dockerfunc.bak"
+        mv "$HOME/.dockerfunc" "$HOME/.dockerfunc.bak"
+        echo "$HOME/.dockerfunc already exists moved to $HOME/.dockerfunc.bak"
         echo "DOCKER updated"
     fi
 else
-    cp $EXEC_PATH/.dockerfunc ~/
+    cp "$EXEC_PATH/.dockerfunc" "$HOME/"
     echo "DOCKER installed"
 fi
 
@@ -106,6 +149,7 @@ git config --global user.name "Tobias Kohlbau"
 git config --global core.editor "vim"
 git config --global diff.tool vimdiff
 git config --global difftool.prompt false
+git config --global push.default simple
 if [ -f /usr/bin/gitg ]; then
     git config --global alias.visual '!gitg'
 fi

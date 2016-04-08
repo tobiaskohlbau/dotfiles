@@ -1,3 +1,9 @@
+# Windows path
+$(uname -o | grep Msys > /dev/null)
+if [ $? -eq 0 ]; then
+    cd /c/Development
+fi
+
 # Start ssh agent
 SSH_AGENT="/usr/bin/gnome-keyring-daemon"
 if [ -e "$SSH_AGENT" ]
@@ -40,7 +46,10 @@ then
 fi
 
 # Caps as Esc
-xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'
+if [ -e "/usr/bin/xmodmap" ]
+then
+    xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'
+fi
 
 for file in ~/.{exports,dockerfunc}; do
     [[ -r "$file" ]] && [[ -f "$file" ]] && source "$file"
