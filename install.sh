@@ -10,21 +10,6 @@ if [ ! -f /usr/bin/git ]; then
     exit 0
 fi
 
-# BASE16
-if [ -d ~/.config/base16-shell ]; then
-    cd ~/.config/base16-shell
-    git fetch
-    DIFF=$(git rev-list HEAD...origin/master --count)
-    if [ $DIFF -ne 0 ]; then
-        git pull origin master
-        echo "BASE16 updated"
-    fi
-    cd $EXEC_PATH
-else
-    git clone -q https://github.com/chriskempson/base16-shell.git ~/.config/base16-shell
-    echo "BASE16 installed"
-fi
-
 # BASHRC
 if [ -f $HOME/.bashrc ]; then
     $(diff -q $EXEC_PATH/.bashrc ~/.bashrc)

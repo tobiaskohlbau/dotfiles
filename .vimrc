@@ -151,9 +151,8 @@ set number
 
 
 " use color scheme
-let base16colorspace=256
 set background=dark
-colorscheme base16-default
+colorscheme solarized
 
 " show trailing whitespaces
 highlight ExtraWhitespace ctermbg=red guibg=red
@@ -193,6 +192,7 @@ map <leader>tn :tn <ENTER>
 map <leader>tp :tp <ENTER>
 map <leader>tf :tf <ENTER>
 map <leader>tl :tl <ENTER>
+map <leader>t :tag <ENTER>
 
 " remove arrow keys
 noremap <Up> <Nop>

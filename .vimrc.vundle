@@ -4,11 +4,12 @@ call vundle#begin()
 
 " vundle packages
 Bundle 'gmarik/vundle'
+Bundle 'altercation/vim-colors-solarized'
 Bundle 'scrooloose/nerdtree'
 Bundle 'tpope/vim-fugitive'
-Plugin 'chriskempson/base16-vim'
 Plugin 'airblade/vim-gitgutter'
-Plugin 'bling/vim-airline'
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
 Plugin 'edkolev/tmuxline.vim'
 Plugin 'zhaocai/GoldenView.Vim'
 Plugin 'majutsushi/tagbar'
