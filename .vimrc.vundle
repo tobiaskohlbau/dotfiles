@@ -22,5 +22,6 @@ Plugin 'kshenoy/vim-signature'
 Plugin 'easymotion/vim-easymotion'
 Plugin 'vim-utils/vim-man'
 Plugin 'tyru/open-browser.vim'
+Plugin 'takac/vim-hardtime'
 
 call vundle#end()

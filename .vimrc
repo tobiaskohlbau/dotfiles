@@ -153,6 +153,7 @@ set number
 " use color scheme
 set background=dark
 colorscheme solarized
+set t_Co=16
 
 " show trailing whitespaces
 highlight ExtraWhitespace ctermbg=red guibg=red
@@ -362,3 +363,6 @@ autocmd FileType cpp set keywordprg=cppman
 map <leader>k <Plug>(Man)
 nmap gx <Plug>(openbrowser-smart-search)
 vmap gx <Plug>(openbrowser-smart-search)
+
+" Enable hardtime by default
+let g:hardtime_default_on=1
