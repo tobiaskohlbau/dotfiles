@@ -4,14 +4,6 @@ if [ $? -eq 0 ]; then
     cd /c/Development
 fi
 
-# Start ssh agent
-SSH_AGENT="/usr/bin/gnome-keyring-daemon"
-if [ -e "$SSH_AGENT" ]
-then
-    eval $($SSH_AGENT --start --components=pkcs11,secrets,ssh)
-    export SSH_AUTH_SOCK
-fi
-
 # Environmentment settings
 export DEV=~/Development
 export GOPATH=$DEV/Go
