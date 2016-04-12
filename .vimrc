@@ -366,3 +366,4 @@ vmap gx <Plug>(openbrowser-smart-search)
 
 " Enable hardtime by default
 let g:hardtime_default_on=1
+let g:hardtime_ignore_buffer_patterns = [ "CustomPatt[ae]rn", "NERD.*", "TAGBAR.*"]
