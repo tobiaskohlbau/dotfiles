@@ -1,5 +1,4 @@
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" "
 " => general settings
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -153,7 +152,6 @@ set number
 " use color scheme
 set background=dark
 colorscheme solarized
-set t_Co=16
 
 " show trailing whitespaces
 highlight ExtraWhitespace ctermbg=red guibg=red
@@ -243,7 +241,7 @@ map <F8> :TagbarToggle<CR>
 " => command definitions
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-command Gct execute "!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q ."
+command Gct execute "!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q --langmap=c++:+.cu ."
 command Gcc call Load_ClassTemplate(expand("%"))
 command Rc call ReplaceColon()
 command Bd call BeautifyDocument()

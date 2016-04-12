@@ -11,22 +11,58 @@ if [ ! -f /usr/bin/git ]; then
 fi
 
 # SOLARIZED
-if [ -d solarized ]; then
-    cd solarized
+mkdir ~/.solarized
+
+# SOLARIZED DIRCOLORS
+if [ -d ~/.solarized/solarized-dirs ]; then
+    cd ~/.solarized/solarized-dirs
     git fetch
     DIFF=$(git rev-list HEAD...origin/master --count)
     if [ $DIFF -ne 0 ]; then
         git pull origin master
-        sh solarized/install.sh
-        sh solarized/set_dark.sh
+        eval `dircolors ~/.solarized/solarized-dirs/dircolors.256dark`
+        echo "SOLARIZED-DIRS updated"
+    fi
+    cd "$EXEC_PATH"
+else
+    git clone https://github.com/seebi/dircolors-solarized.git ~/.solarized/solarized-dirs
+    eval `dircolors ~/.solarized/solarized-dirs/dircolors.256dark`
+    ln -s ~/.solarized/solarized-dirs/dircolors.256dark ~/.dir_colors
+    echo "SOLARIZED-DIRS installed"
+fi
+
+# SOLARIZED
+if [ -d ~/.solarized/solarized ]; then
+    cd ~/.solarized/solarized
+    git fetch
+    DIFF=$(git rev-list HEAD...origin/master --count)
+    if [ $DIFF -ne 0 ]; then
+        git pull origin master
+        ./solarized/install.sh
         echo "SOLARIZED updated"
     fi
     cd "$EXEC_PATH"
 else
-    git clone https://github.com/Anthony25/gnome-terminal-colors-solarized.git solarized
-    sh solarized/install.sh
-    sh solarized/set_dark.sh
+    git clone https://github.com/Anthony25/gnome-terminal-colors-solarized.git ~/.solarized/solarized
+    ~/.solarized/solarized/install.sh
     echo "SOLARIZED installed"
+fi
+
+
+# XRESOURCES
+if [ -f "$HOME/.Xresources" ]; then
+    $(diff -q "$EXEC_PATH/.Xresources" "$HOME/.Xresources")
+    if [ $? -ne 0 ]; then
+        rm -rf "$HOME/.Xresources.bak"
+        mv "$HOME/.Xresources" "$HOME/.Xresources.bak"
+        echo "$HOME/.Xresources already exists moved to $HOME/.Xresources.bak"
+        cp "$EXEC_PATH/.Xresources" "$HOME/"
+        xrdb ~/.Xresources
+    fi
+else
+    cp "$EXEC_PATH/.Xresources" "$HOME/"
+    xrdb ~/.Xresources
+    echo "XRESOURCES installed"
 fi
 
 # BASHRC
