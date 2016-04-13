@@ -152,6 +152,7 @@ set number
 " use color scheme
 set background=dark
 colorscheme solarized
+set t_Co=256
 
 " show trailing whitespaces
 highlight ExtraWhitespace ctermbg=red guibg=red
