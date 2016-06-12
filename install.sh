@@ -217,6 +217,24 @@ else
     echo "MODMAP installed"
 fi
 
+# SSHAGENT
+if [ -f "~/.config/systemd/user/ssh-agent.service" ]; then
+    rm -rf "~/.config/systemd/user/ssh-agent.service"
+    cp ssh-agent.service ~/.config/systemd/user/ssh-agent.service
+    systemctl --user enable ssh-agent
+else
+    cp ssh-agent.service ~/.config/systemd/user/ssh-agent.service
+    systemctl --user enable ssh-agent
+fi
+
+# SSHASKPASS
+if [ -f "~/config/autostart-scripts/ssh-add.sh" ]; then
+    rm -rf "~/config/autostart-scripts/ssh-add.sh"
+    cp ssh-add.sh ~/.config/autostart-scripts/ssh-add.sh
+else
+    cp ssh-add.sh ~/.config/autostart-scripts/ssh-add.sh
+fi
+
 #############################################
 #               GENERAL                     #
 #############################################
