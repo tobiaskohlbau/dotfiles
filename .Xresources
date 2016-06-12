@@ -1,12 +1,3 @@
-URxvt.intensityStyles: false
-URxvt.borderless: true
-URxvt.urgentOnBell: true
-URxvt.cursorBlink: false
-URxvt.transparent: false
-URxvt.shading: 20
-URxvt.scrollBar: false
-URxvt.saveLines: 4096
-URxvt.mouseWheelScrollPage: true
 Xft.dpi: 96
 Xft.lcdfilter: lcddefault
 Xft.hinting: 1
@@ -15,10 +6,39 @@ Xft.autohint: 0
 Xft.rgba: rgb
 Xft.antialias: 1
 
+URxvt.perl-ext-common: default,url-select,resize-font
+
+URxvt.colorUL: #98971a
+URxvt.matcher.button: 1
+URxvt.url-launcher: /usr/bin/xdg-open
+URxvt.url-select.underline: true
+URxvt.url-select.launcher: /usr/bin/xdg-open
+URxvt.keysym.M-u: perl:url-select:select_next
+
+URxvt.iso14755: false
+URxvt.iso14755_52: false
+
+URxvt.urgentOnBell: true
+XTerm*bellIsUrgent: true
+URxvt.cursorBlink: false
+URxvt.transparent: false
+URxvt.shading:          20
+URxvt.scrollBar:        false
+URxvt.saveLines:        4096
+URxvt.mouseWheelScrollPage: true
+
+ratmenu.style: dreary
+ratmenu.font: fixed
+ratmenu.bgcolor: #222222
+ratmenu.fgcolor: #99ff00
+
+URxvt.borderless: true
+URxvt.geometry: 120x40
+
 /* fonts */
-URxvt.font: xft:Hack-Regular:pixelsize=11,xft:Symbola
-URxvt.boldFont: xft:Hack-Bold:pixelsize=11:weight=bold,xft:Symbola
-URxvt.italicFont: xft:Hack-RegularOblique:pixelsize=11:slant=italic,xft:Symbola
+URxvt.font:         xft:Hack-Regular:pixelsize=14,xft:Symbola
+URxvt.boldFont:     xft:Hack-Bold:pixelsize=14:weight=bold,xft:Symbola
+URxvt.italicFont:   xft:Hack-RegularOblique:pixelsize=14:slant=italic,xft:Symbola
 
 #define S_base03        #002b36
 #define S_base02        #073642

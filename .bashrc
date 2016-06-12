@@ -13,6 +13,8 @@ export PATH=$PATH:$GOPATH/bin
 alias dev='cd $DEV'
 alias ls='ls --color=auto'
 
+eval `dircolors ~/.dir_colors`
+
 # PS1 modified
 if [ -e "/usr/share/git/completion/git-prompt.sh" ]
 then
@@ -26,24 +28,9 @@ then
     source /usr/share/git/completion/git-completion.bash
 fi
 
-# Compiler settings
-if [ -e "/usr/bin/clang" ]
-then
-    export CC="/usr/bin/clang"
-    export CXX="/usr/bin/clang++"
-fi
-if [ -e "/usr/local/bin/lld" ]
-then
-    export LD="/usr/local/bin/lld"
-fi
-
-# Caps as Esc
-if [ -e "/usr/bin/xmodmap" ]
-then
-    xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'
-fi
-
 for file in ~/.{exports,dockerfunc}; do
     [[ -r "$file" ]] && [[ -f "$file" ]] && source "$file"
 done
 unset file
+
+

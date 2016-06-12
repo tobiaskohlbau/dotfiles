@@ -1,3 +1,31 @@
+for i in "$@"
+do
+case $i in
+	--force)
+	FORCE=YES
+	shift
+	;;
+    *)
+    ;;
+esac
+done
+
+if [ "$FORCE" == "YES" ]; then
+    mv -f ~/.vim ~/.vim.bak
+    mv -f ~/.vimrc ~/.vimrc.bak
+    mv -f ~/.tmux.conf ~/.tmux.conf.bak
+    mv -f ~/.solarized ~/.solarized.bak
+    mv -f ~/.dir_colors ~/.dir_colors.bak
+    mv -f ~/.Xresources ~/.Xresources.bak
+    mv -f ~/.bashrc ~/.bashrc.bak
+    mv -f ~/.minttyrc ~/.minttyrc.bak
+    mv -f ~/.dockerfunc ~/.dockerfunc.bak
+    sudo rm -f /etc/X11/xinit/xinitrc.d/60-modmap.sh
+    if [ ! -f fonts ]; then
+        rm -rf fonts
+    fi
+fi
+
 #!/bin/bash
 EXEC_PATH=$(cd "$( dirname "$0")" && pwd)
 
@@ -11,7 +39,9 @@ if [ ! -f /usr/bin/git ]; then
 fi
 
 # SOLARIZED
-mkdir ~/.solarized
+if [ ! -d ~/.solarized ]; then
+    mkdir ~/.solarized
+fi
 
 # SOLARIZED DIRCOLORS
 if [ -d ~/.solarized/solarized-dirs ]; then
@@ -22,6 +52,8 @@ if [ -d ~/.solarized/solarized-dirs ]; then
         git pull origin master
         eval `dircolors ~/.solarized/solarized-dirs/dircolors.256dark`
         echo "SOLARIZED-DIRS updated"
+    else
+        echo "SOLARIZED-DIRS up to date"
     fi
     cd "$EXEC_PATH"
 else
@@ -30,24 +62,6 @@ else
     ln -s ~/.solarized/solarized-dirs/dircolors.256dark ~/.dir_colors
     echo "SOLARIZED-DIRS installed"
 fi
-
-# SOLARIZED
-if [ -d ~/.solarized/solarized ]; then
-    cd ~/.solarized/solarized
-    git fetch
-    DIFF=$(git rev-list HEAD...origin/master --count)
-    if [ $DIFF -ne 0 ]; then
-        git pull origin master
-        ./solarized/install.sh
-        echo "SOLARIZED updated"
-    fi
-    cd "$EXEC_PATH"
-else
-    git clone https://github.com/Anthony25/gnome-terminal-colors-solarized.git ~/.solarized/solarized
-    ~/.solarized/solarized/install.sh
-    echo "SOLARIZED installed"
-fi
-
 
 # XRESOURCES
 if [ -f "$HOME/.Xresources" ]; then
@@ -58,6 +72,8 @@ if [ -f "$HOME/.Xresources" ]; then
         echo "$HOME/.Xresources already exists moved to $HOME/.Xresources.bak"
         cp "$EXEC_PATH/.Xresources" "$HOME/"
         xrdb ~/.Xresources
+    else
+        echo "XRESOURCES up to date"
     fi
 else
     cp "$EXEC_PATH/.Xresources" "$HOME/"
@@ -74,6 +90,8 @@ if [ -f "$HOME/.bashrc" ]; then
         echo "$HOME/.bashrc already exists moved to $HOME/.bashrc.bak"
         cp "$EXEC_PATH/.bashrc" "$HOME/"
         source "$HOME/.bashrc"
+    else
+        echo "BASHRC up to date"
     fi
 else
     cp "$EXEC_PATH/.bashrc" "$HOME/"
@@ -89,6 +107,8 @@ if [ -f "$HOME/.minttyrc" ]; then
         mv "$HOME/.minttyrc" "$HOME/.minttyrc.bak"
         echo "$HOME/.minttyrc already exists moved to $HOME/.mintty.bak"
         cp "$EXEC_PATH/.minttyrc" "$HOME/"
+    else
+        echo "MINTTYRC up to date"
     fi
 else
     cp "$EXEC_PATH/.minttyrc" "$HOME/"
@@ -109,6 +129,8 @@ if [ -f "$HOME/.vimrc" ]; then
         echo -e "" >> "$HOME/.vimrc"
         cat "$EXEC_PATH/.vimrc" >> "$HOME/.vimrc"
         echo "VIM updated"
+    else
+        echo "VIM up to date"
     fi
 else
     git clone -q https://github.com/gmarik/Vundle.vim.git "$HOME/.vim/bundle/Vundle"
@@ -128,6 +150,8 @@ if [ -f "$HOME/.tmux.conf" ]; then
         mv "$HOME/.tmux.conf" "$HOME/.tmux.conf.bak"
         echo "$HOME/.tmux.conf already exists moved to $HOME/.tmux.conf.bak"
         echo "TMUX updated"
+    else
+        echo "TMUX up to date"
     fi
 else
     cp "$EXEC_PATH/.tmux.conf" "$HOME/"
@@ -148,6 +172,8 @@ if [ -d fonts ]; then
             sh fonts/install.sh
         fi
         echo "FONTS updated"
+    else
+        echo "FONTS up to date"
     fi
     cd "$EXEC_PATH"
 else
@@ -169,10 +195,26 @@ if [ -f "$HOME/.dockerfunc" ]; then
         mv "$HOME/.dockerfunc" "$HOME/.dockerfunc.bak"
         echo "$HOME/.dockerfunc already exists moved to $HOME/.dockerfunc.bak"
         echo "DOCKER updated"
+    else
+        echo "DOCKER up to date"
     fi
 else
     cp "$EXEC_PATH/.dockerfunc" "$HOME/"
     echo "DOCKER installed"
+fi
+
+# MODMAP
+if [ -f "/etc/X11/xinit/xinitrc.d/60-xmodmap.sh" ]; then
+    $(diff -q "$EXEC_PATH/60-modmap.sh" "/etc/X11/xinit/xinitrc.d/60-modmap.sh")
+    if [ $? -ne 0 ]; then
+        sudo rm -f "/etc/X11/xinit/xinitrc.d/60-modmap.sh"
+        echo "MODMAP updated"
+    else
+        echo "MODMAP up to date"
+    fi
+else
+    sudo cp "$EXEC_PATH/60-modmap.sh" "/etc/X11/xinit/xinitrc.d/60-modmap.sh"
+    echo "MODMAP installed"
 fi
 
 #############################################
@@ -192,17 +234,3 @@ fi
 git config --global alias.cs 'commit -s'
 git config --global alias.last 'log -1 HEAD'
 git config --global alias.d difftool
-
-# GNOME-TERMINAL
-if [ -f /usr/bin/gsettings ]; then
-    DEFAULT=$(gsettings get org.gnome.Terminal.ProfilesList default | grep -oE "[^']+")
-    gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$DEFAULT/ font 'Hack 9'
-    gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$DEFAULT/ use-system-font 'false'
-    gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$DEFAULT/ allow-bold 'false'
-    gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$DEFAULT/ audible-bell 'false'
-    gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$DEFAULT/ scrollbar-policy 'never'
-    gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$DEFAULT/ default-show-menubar 'false'
-    gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$DEFAULT/ use-custom-command 'true'
-    gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$DEFAULT/ custom-command 'tmux'
-    gsettings set org.gnome.Terminal.Legacy.Settings default-show-menubar 'false'
-fi
