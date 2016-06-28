@@ -36,9 +36,9 @@ URxvt.borderless: true
 URxvt.geometry: 120x40
 
 /* fonts */
-URxvt.font:         xft:Hack-Regular:pixelsize=14,xft:Symbola
-URxvt.boldFont:     xft:Hack-Bold:pixelsize=14:weight=bold,xft:Symbola
-URxvt.italicFont:   xft:Hack-RegularOblique:pixelsize=14:slant=italic,xft:Symbola
+URxvt.font:         xft:Hack-Regular:pixelsize=12,xft:Symbola
+URxvt.boldFont:     xft:Hack-Bold:pixelsize=12:weight=bold,xft:Symbola
+URxvt.italicFont:   xft:Hack-RegularOblique:pixelsize=12:slant=italic,xft:Symbola
 
 #define S_base03        #002b36
 #define S_base02        #073642

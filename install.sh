@@ -11,16 +11,28 @@ esac
 done
 
 if [ "$FORCE" == "YES" ]; then
-    mv -f ~/.vim ~/.vim.bak
-    mv -f ~/.vimrc ~/.vimrc.bak
-    mv -f ~/.tmux.conf ~/.tmux.conf.bak
-    mv -f ~/.solarized ~/.solarized.bak
-    mv -f ~/.dir_colors ~/.dir_colors.bak
-    mv -f ~/.Xresources ~/.Xresources.bak
-    mv -f ~/.bashrc ~/.bashrc.bak
-    mv -f ~/.minttyrc ~/.minttyrc.bak
-    mv -f ~/.dockerfunc ~/.dockerfunc.bak
+    rm -rf $HOME/.vim.bak
+    rm -rf $HOME/.vim.bak
+    rm -rf $HOME/.vimrc.bak
+    rm -rf $HOME/.tmux.conf.bak
+    rm -rf $HOME/.solarized.bak
+    rm -rf $HOME/.dir_colors.bak
+    rm -rf $HOME/.Xresources.bak
+    rm -rf $HOME/.bashrc.bak
+    rm -rf $HOME/.minttyrc.bak
+    rm -rf $HOME/.dockerfunc.bak
+    rm -rf $HOME/.config/i3/config.bak
+    mv -f $HOME/.vim $HOME/.vim.bak
+    mv -f $HOME/.vimrc $HOME/.vimrc.bak
+    mv -f $HOME/.tmux.conf $HOME/.tmux.conf.bak
+    mv -f $HOME/.solarized $HOME/.solarized.bak
+    mv -f $HOME/.dir_colors $HOME/.dir_colors.bak
+    mv -f $HOME/.Xresources $HOME/.Xresources.bak
+    mv -f $HOME/.bashrc $HOME/.bashrc.bak
+    mv -f $HOME/.minttyrc $HOME/.minttyrc.bak
+    mv -f $HOME/.dockerfunc $HOME/.dockerfunc.bak
     sudo rm -f /etc/X11/xinit/xinitrc.d/60-modmap.sh
+    mv -f $HOME/.config/i3/config $HOME/.config/i3/config.bak
     if [ ! -f fonts ]; then
         rm -rf fonts
     fi
@@ -39,27 +51,27 @@ if [ ! -f /usr/bin/git ]; then
 fi
 
 # SOLARIZED
-if [ ! -d ~/.solarized ]; then
-    mkdir ~/.solarized
+if [ ! -d $HOME/.solarized ]; then
+    mkdir $HOME/.solarized
 fi
 
 # SOLARIZED DIRCOLORS
-if [ -d ~/.solarized/solarized-dirs ]; then
-    cd ~/.solarized/solarized-dirs
+if [ -d $HOME/.solarized/solarized-dirs ]; then
+    cd $HOME/.solarized/solarized-dirs
     git fetch
     DIFF=$(git rev-list HEAD...origin/master --count)
     if [ $DIFF -ne 0 ]; then
         git pull origin master
-        eval `dircolors ~/.solarized/solarized-dirs/dircolors.256dark`
+        eval `dircolors $HOME/.solarized/solarized-dirs/dircolors.256dark`
         echo "SOLARIZED-DIRS updated"
     else
         echo "SOLARIZED-DIRS up to date"
     fi
     cd "$EXEC_PATH"
 else
-    git clone https://github.com/seebi/dircolors-solarized.git ~/.solarized/solarized-dirs
-    eval `dircolors ~/.solarized/solarized-dirs/dircolors.256dark`
-    ln -s ~/.solarized/solarized-dirs/dircolors.256dark ~/.dir_colors
+    git clone https://github.com/seebi/dircolors-solarized.git $HOME/.solarized/solarized-dirs
+    eval `dircolors $HOME/.solarized/solarized-dirs/dircolors.256dark`
+    ln -s $HOME/.solarized/solarized-dirs/dircolors.256dark $HOME/.dir_colors
     echo "SOLARIZED-DIRS installed"
 fi
 
@@ -71,13 +83,13 @@ if [ -f "$HOME/.Xresources" ]; then
         mv "$HOME/.Xresources" "$HOME/.Xresources.bak"
         echo "$HOME/.Xresources already exists moved to $HOME/.Xresources.bak"
         cp "$EXEC_PATH/.Xresources" "$HOME/"
-        xrdb ~/.Xresources
+        xrdb $HOME/.Xresources
     else
         echo "XRESOURCES up to date"
     fi
 else
     cp "$EXEC_PATH/.Xresources" "$HOME/"
-    xrdb ~/.Xresources
+    xrdb $HOME/.Xresources
     echo "XRESOURCES installed"
 fi
 
@@ -88,13 +100,13 @@ if [ -f "$HOME/.bashrc" ]; then
         rm -rf "$HOME/.bashrc.bak"
         mv "$HOME/.bashrc" "$HOME/.bashrc.bak"
         echo "$HOME/.bashrc already exists moved to $HOME/.bashrc.bak"
-        cp "$EXEC_PATH/.bashrc" "$HOME/"
+        cp "$EXEC_PATH/.bashrc" "$HOME/.bashrc"
         source "$HOME/.bashrc"
     else
         echo "BASHRC up to date"
     fi
 else
-    cp "$EXEC_PATH/.bashrc" "$HOME/"
+    cp "$EXEC_PATH/.bashrc" "$HOME/.bashrc"
     source "$HOME/.bashrc"
     echo "BASHRC installed"
 fi
@@ -218,21 +230,40 @@ else
 fi
 
 # SSHAGENT
-if [ -f "~/.config/systemd/user/ssh-agent.service" ]; then
-    rm -rf "~/.config/systemd/user/ssh-agent.service"
-    cp ssh-agent.service ~/.config/systemd/user/ssh-agent.service
+if [ -f "$HOME/.config/systemd/user/ssh-agent.service" ]; then
+    rm -rf "$HOME/.config/systemd/user/ssh-agent.service"
+    mkdir -p $HOME/.config/systemd/user
+    cp ssh-agent.service $HOME/.config/systemd/user/ssh-agent.service
     systemctl --user enable ssh-agent
 else
-    cp ssh-agent.service ~/.config/systemd/user/ssh-agent.service
+    mkdir -p $HOME/.config/systemd/user
+    cp ssh-agent.service $HOME/.config/systemd/user/ssh-agent.service
     systemctl --user enable ssh-agent
 fi
 
 # SSHASKPASS
-if [ -f "~/config/autostart-scripts/ssh-add.sh" ]; then
-    rm -rf "~/config/autostart-scripts/ssh-add.sh"
-    cp ssh-add.sh ~/.config/autostart-scripts/ssh-add.sh
+if [ -f "$HOME/config/autostart-scripts/ssh-add.sh" ]; then
+    rm -rf "$HOME/config/autostart-scripts/ssh-add.sh"
+    cp ssh-add.sh $HOME/.config/autostart-scripts/ssh-add.sh
 else
-    cp ssh-add.sh ~/.config/autostart-scripts/ssh-add.sh
+    cp ssh-add.sh $HOME/.config/autostart-scripts/ssh-add.sh
+fi
+
+# I3
+if [ -f "$HOME/.config/i3/config" ]; then
+    $(diff -q "$EXEC_PATH/.i3-config" "$HOME/.config/i3/config")
+    if [ $? -ne 0 ]; then
+        rm -f "$HOME/.config/i3/config"
+        mkdir -p $HOME/.config/i3
+        cp "$EXEC_PATH/.i3-config" "$HOME/.config/i3/config"
+        echo "I3 updated"
+    else
+        echo "I3 up to date"
+    fi
+else
+    mkdir -p $HOME/.config/i3
+    cp "$EXEC_PATH/.i3-config" "$HOME/.config/i3/config"
+    echo "I3 installed"
 fi
 
 #############################################
