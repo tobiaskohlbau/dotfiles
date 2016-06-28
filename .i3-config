@@ -171,3 +171,6 @@ mode "music" {
 }
 
 bindsym $mod+m mode "music"
+
+bindsym XF86MonBrightnessUp exec xbacklight -inc 5
+bindsym XF86MonBrightnessDown exec xbacklight -dec 5
