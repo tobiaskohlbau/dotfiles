@@ -33,17 +33,13 @@ for file in ~/.{exports,dockerfunc}; do
 done
 unset file
 
-export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
-if [ -e "/usr/bin/ksshaskpass" ]; then
-    export SSH_ASKPASS="/usr/bin/ksshaskpass"
-fi
-
 # SSH-AGENT
-if ! pgrep -u $USER ssh-agent > /dev/null; then
+$(pgrep -u $USER ssh-agent > /dev/null)
+if [ $? -ne 0 ]; then
     ssh-agent > ~/.ssh-agent-thing
 fi
 if [[ "$SSH_AGENT_PID" == "" ]]; then
-    eval $(<~/.ssh-agent-thing)
+    eval $(<~/.ssh-agent-thing) &> /dev/null
 fi
 ssh-add -l >/dev/null || alias ssh='ssh-add -l >/dev/null || ssh-add && unalias ssh; ssh'
 
