@@ -308,7 +308,7 @@ endfunction
 function! ClangCheck()
   let l:filename = expand('%')
   if l:filename =~ '\.\(cpp\|cxx\|cc\|c\)$'
-    call ClangCheckImpl("clang-check " . l:filename)
+    call ClangCheckImpl("clang-check -std=c++11" . l:filename)
   elseif exists("g:clang_check_last_cmd")
     call ClangCheckImpl(g:clang_check_last_cmd)
   else

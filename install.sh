@@ -1,3 +1,5 @@
+#!/bin/bash
+
 #FUNCTIONS
 diff_file ()
 {
@@ -221,28 +223,47 @@ fi
 
 # VIM
 install_folder $EXEC_PATH/.vim/templates $HOME/.vim/templates
-install_git https://github.com/gmarik/Vundle.vim.git $HOME/.vim/bundle/Vundle
+install_git https://github.com/gmarik/Vundle.vim.git $HOME/.vim/bundle/Vundle.vim
+
+if [ "$FORCE" == "YES" ]
+then
+    backup $HOME/.vimrc
+    $(find $HOME/.vim/bundle/ -maxdepth 1 -mindepth 1 -type d | grep ".*\.bak" | xargs -i rm -rf {})
+fi
 
 if [ -f "$HOME/.vimrc" ]
 then
     LINES=$(sed -n '$=' "$EXEC_PATH/.vimrc.vundle")
-    $(diff -q <(head -n $LINES "$EXEC_PATH/.vimrc.vundle") <(head -n $LINES "$HOME/.vimrc"))
-    if [ $? -ne 0 ]
+    $(diff -q <(head -n $LINES "$EXEC_PATH/.vimrc.vundle") <(head -n $LINES "$HOME/.vimrc") &> /dev/null)
+    DIFF_VUNDLE=$?
+    LINES_TAIL="+$((LINES + 2))"
+    $(diff -q <(tail -n +0 "$EXEC_PATH/.vimrc") <(tail -n $LINES_TAIL "$HOME/.vimrc") &> /dev/null)
+    DIFF_VIMRC=$?
+    if [ $DIFF_VUNDLE -ne 0 ]
     then
         install_file $EXEC_PATH/.vimrc.vundle $HOME/.vimrc
         vim +PluginInstall +qall
+        echo -e "" >> "$HOME/.vimrc"
+        cat "$EXEC_PATH/.vimrc" >> "$HOME/.vimrc"
+        echo -e "$EXEC_PATH/.vimrc updated"
+    fi
+    if [ $DIFF_VIMRC -ne 0 ]
+    then
+        $(head -n $LINES $HOME/.vimrc > $HOME/.vimrc)
         echo -e -e "" >> "$HOME/.vimrc"
         cat "$EXEC_PATH/.vimrc" >> "$HOME/.vimrc"
-        echo -e "EXEC_PATH/.vimrc updated"
-    else
+        echo -e "$EXEC_PATH/.vimrc updated"
+    fi
+    if [ $DIFF_VUNDLE -eq 0 ] && [ $DIFF_VIMRC -eq 0 ]
+    then
         echo -e "$EXEC_PATH/.vimrc up to date"
     fi
 else
     install_file $EXEC_PATH/.vimrc.vundle $HOME/.vimrc
     vim +PluginInstall +qall
-    echo -e -e "" >> "$HOME/.vimrc"
+    echo -e "" >> "$HOME/.vimrc"
     cat "$EXEC_PATH/.vimrc" >> "$HOME/.vimrc"
-    echo -e "$EXEC_PATH/.vimrc installed"
+    echo -e "$HOME/.vimrc installed"
 fi
 
 

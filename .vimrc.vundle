@@ -1,9 +1,9 @@
 " init vundle
-set rtp+=~/.vim/bundle/Vundle/
+set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
 " vundle packages
-Bundle 'gmarik/vundle'
+Bundle 'VundleVim/Vundle.vim'
 Bundle 'altercation/vim-colors-solarized'
 Bundle 'scrooloose/nerdtree'
 Bundle 'tpope/vim-fugitive'
