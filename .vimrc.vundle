@@ -1,3 +1,6 @@
+set nocompatible
+filetype off
+
 " init vundle
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
@@ -23,5 +26,8 @@ Plugin 'easymotion/vim-easymotion'
 Plugin 'vim-utils/vim-man'
 Plugin 'tyru/open-browser.vim'
 Plugin 'takac/vim-hardtime'
+Plugin 'sjl/gundo.vim'
 
 call vundle#end()
+
+filetype plugin indent on

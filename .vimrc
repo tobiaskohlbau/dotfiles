@@ -3,11 +3,6 @@
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-
-" enable plugins by filetype
-filetype plugin on
-filetype indent on
-
 "enable tweaks
 set ignorecase
 set laststatus=2
@@ -317,6 +312,7 @@ function! ClangCheck()
 endfunction
 
 nmap <silent> <F5> :call ClangCheck()<CR><CR>
+nnoremap <F4> :GundoToggle<CR>
 
 map <C-K> :pyf /usr/share/clang/clang-format.py<CR><CR>
 imap <C-K> <c-o>:pyf /usr/share/clang/clang-format.py<CR><CR>

@@ -245,18 +245,18 @@ then
         vim +PluginInstall +qall
         echo -e "" >> "$HOME/.vimrc"
         cat "$EXEC_PATH/.vimrc" >> "$HOME/.vimrc"
-        echo -e "$EXEC_PATH/.vimrc updated"
+        echo -e "$HOME/.vimrc updated"
     fi
     if [ $DIFF_VIMRC -ne 0 ]
     then
-        $(head -n $LINES $HOME/.vimrc > $HOME/.vimrc)
+        install_file $EXEC_PATH/.vimrc.vundle $HOME/.vimrc
         echo -e -e "" >> "$HOME/.vimrc"
         cat "$EXEC_PATH/.vimrc" >> "$HOME/.vimrc"
-        echo -e "$EXEC_PATH/.vimrc updated"
+        echo -e "$HOME updated"
     fi
     if [ $DIFF_VUNDLE -eq 0 ] && [ $DIFF_VIMRC -eq 0 ]
     then
-        echo -e "$EXEC_PATH/.vimrc up to date"
+        echo -e "$HOME/.vimrc up to date"
     fi
 else
     install_file $EXEC_PATH/.vimrc.vundle $HOME/.vimrc
