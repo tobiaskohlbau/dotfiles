@@ -1,7 +1,0 @@
-BoldAsFont=no
-FontHeight=9
-BackspaceSendsBS=yes
-Font=Hack
-SwitchShortcuts=no
-Term=xterm-256color
-Scrollbar=none
