@@ -135,7 +135,7 @@ if [ -f "$HOME/.vimrc" ]; then
         rm -rf "$HOME/.vimrc.bak"
         mv -f "$HOME/.vimrc" "$HOME/.vimrc.bak"
         echo "$HOME/.vimrc already exists moved to $HOME/.vimrc.bak"
-        cp -R "$EXEC_PATH/.vim" "$HOME/.vim"
+        cp -R "$EXEC_PATH/.vim" "$HOME/"
         cp "$EXEC_PATH/.vimrc.vundle" "$HOME/.vimrc"
         vim +PluginInstall +qall
         echo -e "" >> "$HOME/.vimrc"
@@ -146,7 +146,7 @@ if [ -f "$HOME/.vimrc" ]; then
     fi
 else
     git clone -q https://github.com/gmarik/Vundle.vim.git "$HOME/.vim/bundle/Vundle"
-    cp -R ".vim" "$HOME/.vim"
+    cp -R ".vim" "$HOME/"
     cp "$EXEC_PATH/.vimrc.vundle" "$HOME/.vimrc"
     vim +PluginInstall +qall
     echo -e "" >> "$HOME/.vimrc"
@@ -227,43 +227,6 @@ if [ -f "/etc/X11/xinit/xinitrc.d/60-xmodmap.sh" ]; then
 else
     sudo cp "$EXEC_PATH/60-modmap.sh" "/etc/X11/xinit/xinitrc.d/60-modmap.sh"
     echo "MODMAP installed"
-fi
-
-# SSHAGENT
-if [ -f "$HOME/.config/systemd/user/ssh-agent.service" ]; then
-    rm -rf "$HOME/.config/systemd/user/ssh-agent.service"
-    mkdir -p $HOME/.config/systemd/user
-    cp ssh-agent.service $HOME/.config/systemd/user/ssh-agent.service
-    systemctl --user enable ssh-agent
-else
-    mkdir -p $HOME/.config/systemd/user
-    cp ssh-agent.service $HOME/.config/systemd/user/ssh-agent.service
-    systemctl --user enable ssh-agent
-fi
-
-# SSHASKPASS
-if [ -f "$HOME/config/autostart-scripts/ssh-add.sh" ]; then
-    rm -rf "$HOME/config/autostart-scripts/ssh-add.sh"
-    cp ssh-add.sh $HOME/.config/autostart-scripts/ssh-add.sh
-else
-    cp ssh-add.sh $HOME/.config/autostart-scripts/ssh-add.sh
-fi
-
-# I3
-if [ -f "$HOME/.config/i3/config" ]; then
-    $(diff -q "$EXEC_PATH/.i3-config" "$HOME/.config/i3/config")
-    if [ $? -ne 0 ]; then
-        rm -f "$HOME/.config/i3/config"
-        mkdir -p $HOME/.config/i3
-        cp "$EXEC_PATH/.i3-config" "$HOME/.config/i3/config"
-        echo "I3 updated"
-    else
-        echo "I3 up to date"
-    fi
-else
-    mkdir -p $HOME/.config/i3
-    cp "$EXEC_PATH/.i3-config" "$HOME/.config/i3/config"
-    echo "I3 installed"
 fi
 
 #############################################
