@@ -213,7 +213,11 @@ map <leader>sn :sbn <ENTER>
 map <leader>sp :sbp <ENTER>
 
 " shortcut for beautify document
-map <leader>bd :Bd <ENTER>
+function! FormatDocument()
+    let l:lines = "1:" . line("$")
+    pyfile /usr/share/clang/clang-format.py
+endfunction
+nnoremap <leader>f :call FormatDocument()<CR>
 
 " Return to last edit position when opening files (You want this!)
 autocmd BufReadPost *
@@ -240,26 +244,12 @@ map <F8> :TagbarToggle<CR>
 command Gct execute "!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q --langmap=c++:+.cu ."
 command Gcc call Load_ClassTemplate(expand("%"))
 command Rc call ReplaceColon()
-command Bd call BeautifyDocument()
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "
 " => function definitions
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-function! BeautifyDocument()
-    exe "normal mz"
-      %s/\r//ge
-      %s/\s\+$//ge
-    exe "normal `z"
-    silent exe "retab"
-endfunction
-function! ReplaceColon()
-    exe "s#;#\<CR>{\<CR>}"
-    exe "normal! O"
-    :startinsert
-endfunction
-
 function! SwapExtension()
     let [path, ext] = [expand('%:r'), expand('%:e')]
     if ext == 'h'
@@ -367,3 +357,5 @@ vmap <C-c> "+y
 
 inoremap jk <esc>
 inoremap <c-c> <nop>
+
+nnoremap <leader>. :CtrlPTag<cr>
