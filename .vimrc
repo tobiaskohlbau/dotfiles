@@ -261,7 +261,7 @@ function! SwapExtension()
 endfunction
 
 function! Load_ClassTemplate(filetype)
-    if a:filetype =~ "\.h$"
+    if a:filetype =~ '\.\(h\|hpp\)$'
         0r ~/.vim/templates/cpp/ClassHeader.h
     elseif a:filetype =~ "\.cpp$"
         0r ~/.vim/templates/cpp/ClassFile.cpp
