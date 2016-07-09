@@ -221,6 +221,9 @@ then
 fi
 ################### GIT ###################
 
+# EMACS
+install_folder $EXEC_PATH/.emacs.d $HOME/.emacs.d
+
 # VIM
 install_folder $EXEC_PATH/.vim/templates $HOME/.vim/templates
 install_git https://github.com/gmarik/Vundle.vim.git $HOME/.vim/bundle/Vundle.vim
