@@ -279,7 +279,7 @@ fi
 if [ ! -f /usr/bin/git ]; then
     git config --global user.email "tobias.kohlbau@gmail.com"
     git config --global user.name "Tobias Kohlbau"
-    git config --global core.editor "vim"
+    git config --global core.editor "emacs"
     git config --global diff.tool vimdiff
     git config --global difftool.prompt false
     git config --global push.default simple
