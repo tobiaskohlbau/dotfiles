@@ -201,14 +201,14 @@ sudo systemctl enable lock.service
 ################### FILES ###################
 
 ################### GIT ###################
-# SOLARIZED DIRCOLORS
-install_git https://github.com/seebi/dircolors-solarized.git $HOME/.solarized-dirs
-SOLARIZED_FILE=$HOME/.solarized-dirs/dircolors.256dark
-diff_file $HOME/.dir_colors $SOLARIZED_FILE
+# MONOKAI DIRCOLORS
+install_git https://github.com/jalemolina/LS_COLORS.git $HOME/.monokai-dirs
+MONOKAI_FILE=$HOME/.monokai-dirs/.LS_COLORS
+diff_file $HOME/.dir_colors $MONOKAI_FILE
 if [ $? -ne 0 ]
 then
     rm -rf $HOME/.dir_colors
-    ln -s $SOLARIZED_FILE $HOME/.dir_colors
+    ln -s $MONOKAI_FILE $HOME/.dir_colors
 fi
 
 # FONTS

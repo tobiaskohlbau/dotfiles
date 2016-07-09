@@ -29,9 +29,11 @@
 
 (require 'init-global-functions)
 
+(require 'init-fonts)
 (require 'init-evil)
 (require 'init-powerline)
-;;(require 'init-cmake-ide)
+(require 'init-flycheck)
+(require 'init-cmake-ide)
 
 (use-package helm
   :ensure t
@@ -51,21 +53,6 @@
   (setq nlinum-relative-redisplay-delay 0)
   (add-hook 'prog-mode-hook #'nlinum-relative-mode))
 
-(use-package solarized-theme
-  :ensure t
-  :if (display-graphic-p)
-  :config
-  (progn
-    (setq solarized-use-variable-pitch nil
-      solarized-scale-org-headlines nil)
-    (load-theme 'solarized-dark t)))
-
-(use-package zenburn-theme
-  :ensure t
-  :if (not (display-graphic-p))
-  :init (load-theme 'zenburn))
-
-
 (define-key evil-normal-state-map (kbd "C-k") (lambda ()
                     (interactive)
                     (evil-scroll-up nil)))
@@ -80,5 +67,26 @@
   kept-old-versions 2
   version-control t)
 
+(add-hook 'window-setup-hook
+	  (lambda ()
+	    (when (memq window-system '(x))
+	      (add-to-list 'default-frame-alist '(font . "Hack"))
+	      (set-face-attribute 'default nil :font "Hack")
+	      (sanityinc/set-frame-font-size 16))
+	    (when (fboundp 'powerline-reset)
+	      (powerline-reset))))
+
+(use-package color-theme-approximate
+  :ensure t)
+
+(use-package monokai-theme
+  :ensure t)
+
+(color-theme-approximate-on)
+(add-hook 'window-setup-hook (lambda () (load-theme 'monokai t)))
+
+(setq scroll-margin 5
+scroll-conservatively 9999
+scroll-step 1)
 
 (provide 'init)
