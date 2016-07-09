@@ -72,7 +72,7 @@
 	    (when (memq window-system '(x))
 	      (add-to-list 'default-frame-alist '(font . "Hack"))
 	      (set-face-attribute 'default nil :font "Hack")
-	      (sanityinc/set-frame-font-size 16))
+	      (sanityinc/set-frame-font-size 12))
 	    (when (fboundp 'powerline-reset)
 	      (powerline-reset))))
 
