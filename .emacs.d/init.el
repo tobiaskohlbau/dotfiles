@@ -46,6 +46,8 @@
   (define-key helm-map (kbd "S-SPC") 'helm-toggle-visible-mark)
   (define-key helm-find-files-map (kbd "C-k") 'helm-find-files-up-one-level))
 
+(require 'init-spotify)
+
 (use-package nlinum-relative
   :ensure t
   :config
@@ -90,3 +92,17 @@ scroll-conservatively 9999
 scroll-step 1)
 
 (provide 'init)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   (quote
+    (monokai-theme color-theme-approximate nlinum-relative helm cmake-ide irony company auto-complete-clang rtags flycheck powerline-evil powerline evil-leader evil use-package fullframe))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
