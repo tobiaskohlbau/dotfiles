@@ -12,7 +12,6 @@ export PATH=$PATH:$GOPATH/bin
 # Alias settings
 alias dev='cd $DEV'
 alias ls='ls --color=auto'
-alias vim='emacs'
 
 eval `dircolors ~/.dir_colors`
 
