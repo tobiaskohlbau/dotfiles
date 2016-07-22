@@ -1,0 +1,7 @@
+[user]
+	name = Tobias Kohlbau
+	email = tobias.kohlbau@gmail.com
+	signingkey = 0x86794390A488A7E9
+
+[commit]
+	gpgsign = true

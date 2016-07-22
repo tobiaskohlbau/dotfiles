@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
 
+USERNAME=$(find /home/* -maxdepth 0 -printf "%f" -type d)
+
 check_is_sudo() {
     if [ "$EUID" -ne 0 ]; then
 	echo "Please run as root."
@@ -12,7 +14,7 @@ setup_sources() {
     apt-get update
     apt-get install -y \
 	    apt-transport-https \
-	    --no-install-recomends
+	    --no-install-recommends
 
     cat <<-EOF > /etc/apt/sources.list
     deb http://httpredir.debian.org/debian stretch main contrib non-free
@@ -43,6 +45,7 @@ EOF
     apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
     apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys E1DD270288B4E6030699E45FA1715D88E1DF1F24
     apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 9DBB0BE9366964F134855E2255F96FCF8231B6DD
+    apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 
 
     mkdir -p /etc/apt/apt.conf.d
     echo 'Acquire::Languages "none";' > /etc/apt/apt.conf.d/99translations
@@ -72,9 +75,11 @@ base() {
 
     setup_sudo
 
-    apt-get autoremove
-    apt-get autoclean
-    apt-get clean
+    apt-get autoremove -y
+    apt-get autoclean -y
+    apt-get clean -y
+
+    install_docker
 }
 
 setup_sudo() {
@@ -87,15 +92,71 @@ setup_sudo() {
     echo -e "\n# tmpfs for downloads\ntmpfs\t/home/${USERNAME}/Downloads\ttmpfs\tnodev,nosuid,size=2G\t0\t0" >> /etc/fstab
 }
 
+install_docker() {
+	sudo groupadd docker
+	sudo gpasswd -a "$USERNAME" docker
+
+	curl -sSL https://get.docker.com/builds/Linux/x86_64/docker-latest.tgz | tar -xvz \
+		-C /usr/local/bin --strip-components 1
+	chmod +x /usr/local/bin/docker*
+
+	curl -sSL https://raw.githubusercontent.com/tobiaskohlbau/dotfiles/master/etc/systemd/system/docker.service > /etc/systemd/syste/docker.service
+	curl -sSL https://raw.githubusercontent.com/tobiaskohlbau/dotfiles/master/etc/systemd/system/docker.socket > /etc/systemd/syste/docker.socket
+
+	systemctl daemon-reload
+	systemctl enable docker
+
+}
+
+install_graphics() {
+    local system=$1
+
+    if [[ -z "$system" ]]; then
+        echo "You need to specify wheter it's computer or laptop"
+        exit 1
+    fi
+
+    local pkgs="linux-headers-$(uname -r|sed 's,[^-]*-[^-]*-,,') nvidia-driver"
+
+    if [[ $system == "laptop" ]]; then
+        local pkgs="xorg xserver-xorg xserver-xorg-video-intel"
+    fi
+
+    apt-get install -y $pkgs --no-install-recommends
+}
+
+install_wmapps() {
+    local pkgs="feh i3 i3lock i3status scrot slim neovim emacs24"
+
+    apt-get install -y $pkgs --no-install-recommends
+}
+
+get_dotfiles() {
+    (
+    git clone git@github.com:tobiaskohlbau/dotfiles.git "/home/$USERNAME/dotfiles"
+    cd "/home/$USERNAME/dotfiles"
+
+    make
+
+    sudo systemctl enable i3lock
+
+    cd "/home/$USERNAME"
+    )
+}
+
 usage() {
-    echo "Usage: "
+    echo "Usage:"
+    echo "  sources			- setup sources & install base pks"
+    echo "  graphics {computer, laptop}	- install graphics driver"
+    echo "  wm				- install window manager & desktop pks"
+    echo "  dotfiles			- receive dotfiles"
 }
 
 main() {
     local cmd=$1
 
     if [[ -z "$cmd" ]]; then
-	#usage
+	usage
 	exit 1
     fi
 
@@ -105,5 +166,17 @@ main() {
 	setup_sources
 
 	base
+    elif [[ $cmd == "graphics" ]]; then
+        check_is_sudo
+
+        install_graphics "$2"
+    elif [[ $cmd == "wm" ]]; then
+        check_is_sudo
+
+        install_wmapps
+    elif [[ $cmd == "dotfiles" ]]; then
+        get_dotfiles
     fi
 }
+
+main "$@"
