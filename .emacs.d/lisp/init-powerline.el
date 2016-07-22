@@ -1,20 +1,20 @@
 (defface my-pl-segment1-active
-  '((t (:foreground "#000000" :background "#E1B61A")))
+  '((t (:foreground "#000000" :background "#A6E22E")))
   "Powerline first segment active face.")
 (defface my-pl-segment1-inactive
-  '((t (:foreground "#CEBFF3" :background "#3A2E58")))
+  '((t (:foreground "#CEBFF3" :background "#75715E")))
   "Powerline first segment inactive face.")
 (defface my-pl-segment2-active
   '((t (:foreground "#F5E39F" :background "#8A7119")))
   "Powerline second segment active face.")
 (defface my-pl-segment2-inactive
-  '((t (:foreground "#CEBFF3" :background "#3A2E58")))
+  '((t (:foreground "#CEBFF3" :background "#75715E")))
   "Powerline second segment inactive face.")
 (defface my-pl-segment3-active
-  '((t (:foreground "#CEBFF3" :background "#3A2E58")))
+  '((t (:foreground "#CEBFF3" :background "#75715E")))
   "Powerline third segment active face.")
 (defface my-pl-segment3-inactive
-  '((t (:foreground "#CEBFF3" :background "#3A2E58")))
+  '((t (:foreground "#CEBFF3" :background "#75715E")))
   "Powerline third segment inactive face.")
 
 (defun air--powerline-default-theme ()
