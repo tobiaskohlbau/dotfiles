@@ -29,11 +29,6 @@ then
     source /usr/share/git/completion/git-completion.bash
 fi
 
-for file in ~/.{exports,dockerfunc}; do
-    [[ -r "$file" ]] && [[ -f "$file" ]] && source "$file"
-done
-unset file
-
 # SSH-AGENT
 $(pgrep -u $USER ssh-agent > /dev/null)
 if [ $? -ne 0 ]; then
@@ -46,3 +41,12 @@ ssh-add -l >/dev/null || alias ssh='ssh-add -l >/dev/null || ssh-add && unalias 
 
 # DIRCOLORS
 eval `dircolors $HOME/.dir_colors`
+
+# XHOST
+xhost + &> /dev/null
+
+# DOCKER
+for file in ~/.{exports,dockerfunc}; do
+    [[ -r "$file" ]] && [[ -f "$file" ]] && source "$file"
+done
+unset file
