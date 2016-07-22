@@ -1,0 +1,29 @@
+[Unit]
+Description=Docker Application Container Engine
+Documentation=http://docs.docker.com
+After=network.target docker.socket
+Requires=docker.socket
+
+[Service]
+Environment=GOMAXPROCS=2
+ExectStartPre=-/sbin/iptables -F DOCKER
+ExectStartPre=-/sbin/iptables -X DOCKER
+ExectStartPre=-/sbin/iptables -N DOCKER
+ExectStartPre=-/sbin/iptables -I DOCKER -i ext_if ! -s 127.0.0.1 -j DROP
+ExecStart=/usr/bin/docker daemon -D \
+		   -s overlay \
+		   -H fd:// \
+		   --exec-opt=native.cgroupdriver=cgroupfs \
+		   --userland-proxy=true \
+		   --disable-legacy-registry=true \
+		   --iptables=true
+
+MountFlags=slave
+LimitNOFILE=1048576
+LimitNPROC=1048576
+Delegate=yes
+MemoryLimit=4G
+CPUQuota=50%
+
+[Install]
+WantedBy=multi-user.target

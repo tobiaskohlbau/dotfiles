@@ -100,8 +100,8 @@ install_docker() {
 		-C /usr/local/bin --strip-components 1
 	chmod +x /usr/local/bin/docker*
 
-	curl -sSL https://raw.githubusercontent.com/tobiaskohlbau/dotfiles/master/etc/systemd/system/docker.service > /etc/systemd/syste/docker.service
-	curl -sSL https://raw.githubusercontent.com/tobiaskohlbau/dotfiles/master/etc/systemd/system/docker.socket > /etc/systemd/syste/docker.socket
+	curl -sSL https://raw.githubusercontent.com/tobiaskohlbau/dotfiles/debian/etc/systemd/system/docker.service > /etc/systemd/syste/docker.service
+	curl -sSL https://raw.githubusercontent.com/tobiaskohlbau/dotfiles/debian/etc/systemd/system/docker.socket > /etc/systemd/syste/docker.socket
 
 	systemctl daemon-reload
 	systemctl enable docker
