@@ -95,14 +95,6 @@
   kept-old-versions 2
   version-control t)
 
-(add-hook 'window-setup-hook
-	  (lambda ()
-	    (when (memq window-system '(x))
-	      (add-to-list 'default-frame-alist '(font . "Hack"))
-	      (set-face-attribute 'default nil :font "Hack")
-	      (sanityinc/set-frame-font-size 12))
-	    (when (fboundp 'powerline-reset)
-	      (powerline-reset))))
 
 (use-package color-theme-approximate
   :ensure t)

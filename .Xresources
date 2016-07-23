@@ -36,9 +36,12 @@ URxvt.borderless: true
 URxvt.geometry: 120x40
 
 /* fonts */
-URxvt.font:         xft:Hack-Regular:pixelsize=12,xft:Symbola
-URxvt.boldFont:     xft:Hack-Bold:pixelsize=12:weight=bold,xft:Symbola
-URxvt.italicFont:   xft:Hack-RegularOblique:pixelsize=12:slant=italic,xft:Symbola
+URxvt.font:         xft:Inconsolata for Powerline:pixelsize=16,style=Medium xft:Symbola:pixelsize=19,style=Regular
+URxvt.boldFont:     xft:Inconsolata for Powerline:style=Bold,pixelsize=16 xft:Symbola:pixelsize=19,style=Regular
+Emacs.font:	    Inconsolata for Powerline:pixelsize=16:antialise:true
+Emacs.fontBackendc: xft
+
+*faceSize: 10
 
 #define base00 #272822
 #define base01 #383830

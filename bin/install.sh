@@ -93,7 +93,7 @@ setup_sudo() {
 }
 
 install_docker() {
-	sudo groupadd docker
+	sudo groupadd -f docker
 	sudo gpasswd -a "$USERNAME" docker
 
 	curl -sSL https://get.docker.com/builds/Linux/x86_64/docker-latest.tgz | tar -xvz \
@@ -129,11 +129,24 @@ install_wmapps() {
     local pkgs="feh i3 i3lock i3status scrot slim neovim emacs24"
 
     apt-get install -y $pkgs --no-install-recommends
+
+    curl -sSL https://raw.githubusercontent.com/tobiaskohlbau/dotfiles/debian/etc/fonts/local.conf > /etc/fonts/local.conf
+
+    echo "Fonts file setup successfully now run:"
+    echo "  dpkg-reconfigure fontconfig-config"
+    echo "with settings:"
+    echo "  Authinter, Automatic, No."
+    echo "Run:"
+    echo "  dpkg-reconfigure fontconfig"
 }
 
 get_dotfiles() {
     (
-    git clone git@github.com:tobiaskohlbau/dotfiles.git "/home/$USERNAME/dotfiles"
+    cd "/home/$USERNAME"
+
+    git clone https://github.com/powerline/fonts.git "/home/$USERNAME/.fonts"
+
+    git clone https://github.com/tobiaskohlbau/dotfiles.git "/home/$USERNAME/dotfiles"
     cd "/home/$USERNAME/dotfiles"
 
     make
