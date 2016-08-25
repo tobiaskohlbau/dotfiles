@@ -41,11 +41,11 @@ EOF
     deb https://apt.dockerproject.org/repo debian-stretch testing
     deb https://apt.dockerproject.org/repo debian-stretch experimental
 EOF
-    
+
     apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
     apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys E1DD270288B4E6030699E45FA1715D88E1DF1F24
     apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 9DBB0BE9366964F134855E2255F96FCF8231B6DD
-    apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 
+    apt-key adv --keyserver pool.sks-keyservers.net --recv-keys CD4E8809
 
     mkdir -p /etc/apt/apt.conf.d
     echo 'Acquire::Languages "none";' > /etc/apt/apt.conf.d/99translations
@@ -100,8 +100,8 @@ install_docker() {
 		-C /usr/local/bin --strip-components 1
 	chmod +x /usr/local/bin/docker*
 
-	curl -sSL https://raw.githubusercontent.com/tobiaskohlbau/dotfiles/debian/etc/systemd/system/docker.service > /etc/systemd/syste/docker.service
-	curl -sSL https://raw.githubusercontent.com/tobiaskohlbau/dotfiles/debian/etc/systemd/system/docker.socket > /etc/systemd/syste/docker.socket
+	curl -sSL https://raw.githubusercontent.com/tobiaskohlbau/dotfiles/debian/etc/systemd/system/docker.service > /etc/systemd/system/docker.service
+	curl -sSL https://raw.githubusercontent.com/tobiaskohlbau/dotfiles/debian/etc/systemd/system/docker.socket > /etc/systemd/system/docker.socket
 
 	systemctl daemon-reload
 	systemctl enable docker
@@ -146,7 +146,7 @@ get_dotfiles() {
 
     git clone https://github.com/powerline/fonts.git "/home/$USERNAME/.fonts"
 
-    git clone https://github.com/tobiaskohlbau/dotfiles.git "/home/$USERNAME/dotfiles"
+    git clone -b debian https://github.com/tobiaskohlbau/dotfiles.git "/home/$USERNAME/dotfiles"
     cd "/home/$USERNAME/dotfiles"
 
     make
