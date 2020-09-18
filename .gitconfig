@@ -1,0 +1,5 @@
+[user]
+        email = tobias@kohlbau.de
+        name = Tobias Kohlbau
+[core]
+        editor = vim
