@@ -1,5 +1,24 @@
 #!/bin/bash
 
+diff_file ()
+{
+    if [ -e /usr/bin/md5sum ]
+    then
+        file1=($(md5sum $1))
+        file2=($(md5sum $2))
+        if [ "$file1" = "$file2" ]
+        then
+            return 0
+        else
+            return 1
+        fi
+    else
+        echo -e "Please install md5..."
+        return 1
+    fi
+
+}
+
 backup ()
 {
     if [ -e $1.bak ] || [ -d $1.bak ]
