@@ -38,6 +38,8 @@ install_file ()
     fi
 }
 
+EXEC_PATH=$(cd "$( dirname "$0")" && pwd)
+
 # gitconfig
 install_file $EXEC_PATH/.gitconfig $HOME/.gitconfig
 
